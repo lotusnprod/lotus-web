@@ -1,0 +1,30 @@
+version: '3.2'
+
+services:
+  lotus-online:
+    build: '.'
+    image: nponline/lotusweb:latest
+    container_name: lotus-online
+    volumes:
+    - ./data:/data
+    environment:
+        VIRTUAL_HOST: lotus.naturalproducts.net
+        VIRTUAL_PORT: 8092
+        LETSENCRYPT_HOST: lotus.naturalproducts.net
+        LETSENCRYPT_EMAIL: maria.ssorokina@gmail.com
+
+
+  npoc-mongo-db:
+    image: mongo:4.0.6
+    command: mongod --port 27019
+    ports:
+      - '27019:27019'
+    container_name: npoc-mongo-db
+    volumes:
+    - ./mongodata:/mongodata
+
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
