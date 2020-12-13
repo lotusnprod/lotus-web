@@ -13,6 +13,19 @@ export default class Representations extends React.Component {
                 <Card.Body>
                     <Card.Title className="text-primary">Representations</Card.Title>
                     <br />
+                    <script type="application/ld+json" id="bioschemas">
+                        {
+                            "@context":"https://schema.org",
+                            "@type":"MolecularEntity",
+                            "name":"{naturalProduct.name}",
+                            "identifier":"{naturalProduct.lotus_id}",
+                            "iupacName":"{naturalProduct.iupac_name}",
+                            "inChIKey":"{naturalProduct.inchikey}",
+                            "url":"https://lotus.naturalproducts.net/compound/lotus_id/{naturalProduct.lotus_id}",
+                            "inChI":"{naturalProduct.inchi}",
+                            "smiles":"{naturalProduct.unique_smiles || naturalProduct.clean_smiles }"
+                         }
+                    </script>
                     <Table responsive bordered hover size="sm" >
                         <tbody>
                         <tr key={"represent_id"}>
