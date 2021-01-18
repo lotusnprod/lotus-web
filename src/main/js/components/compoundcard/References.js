@@ -23,39 +23,42 @@ export default class  References  extends React.Component {
             );
         }else{
             for(let i=0; i<naturalProduct.citationDOI.length; i++) {
-                let ref_link = "";
 
-                if (RegExp(/^\d+$/).test(naturalProduct.citationDOI[i])) {
-                    //only numbers = PubMed id
+                if(naturalProduct.citationDOI[i].length>=5) {
+                    let ref_link = "";
 
-                    let ra = "https://pubmed.ncbi.nlm.nih.gov/"+ naturalProduct.citationDOI[i] ;
-                    ref_link = <a href= {ra}>PubMed </a> ;
+                    if (RegExp(/^\d+$/).test(naturalProduct.citationDOI[i])) {
+                        //only numbers = PubMed id
 
-                } else if (RegExp(/\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&\'<>])\S)+)\b/g).test(naturalProduct.citationDOI[i])) {
-                    //doi but without the "doi"
-                    let ra = "https://doi.org/"+naturalProduct.citationDOI[i];
-                    ref_link = <a href= {ra}>DOI </a> ;
-                }else if( RegExp(/^(doi.org).+/).test(naturalProduct.citationDOI[i]) ){
-                    //doi.org
-                    let ra = "https://"+naturalProduct.citationDOI[i];
+                        let ra = "https://pubmed.ncbi.nlm.nih.gov/" + naturalProduct.citationDOI[i];
+                        ref_link = <a href={ra}>PubMed </a>;
 
-                    ref_link = <a href={ra}>DOI</a>;
-                }else if(RegExp(/^(doi:|DOI:).+/).test(naturalProduct.citationDOI[i])){
-                    //doi:
-                    let ra = "https://doi.org/" + naturalProduct.citationDOI[i].split(":")[1];
-                    ref_link = <a href={ra}>DOI</a>;
-                }else {
-                    //for now, actual text
-                    if (naturalProduct.citationDOI[i] != " " && naturalProduct.citationDOI[i] != "NA") {
-                        ref_link = naturalProduct.citationDOI[i];
+                    } else if (RegExp(/\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&\'<>])\S)+)\b/g).test(naturalProduct.citationDOI[i])) {
+                        //doi but without the "doi"
+                        let ra = "https://doi.org/" + naturalProduct.citationDOI[i];
+                        ref_link = <a href={ra}>DOI </a>;
+                    } else if (RegExp(/^(doi.org).+/).test(naturalProduct.citationDOI[i])) {
+                        //doi.org
+                        let ra = "https://" + naturalProduct.citationDOI[i];
+
+                        ref_link = <a href={ra}>DOI</a>;
+                    } else if (RegExp(/^(doi:|DOI:).+/).test(naturalProduct.citationDOI[i])) {
+                        //doi:
+                        let ra = "https://doi.org/" + naturalProduct.citationDOI[i].split(":")[1];
+                        ref_link = <a href={ra}>DOI</a>;
+                    } else {
+                        //for now, actual text
+                        if (naturalProduct.citationDOI[i] != " " && naturalProduct.citationDOI[i] != "NA") {
+                            ref_link = naturalProduct.citationDOI[i];
+                        }
                     }
-                }
 
-                refTable.push(
-                    <tr key={i+"_refs"}>
-                        <td>{ref_link}</td>
-                    </tr>
-                );
+                    refTable.push(
+                        <tr key={i + "_refs"}>
+                            <td>{ref_link}</td>
+                        </tr>
+                    );
+                }
 
             }
         }

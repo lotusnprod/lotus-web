@@ -646,7 +646,7 @@ export default class AdvancedSearch extends React.Component {
     }
 
     handleMolecularWeightMax(e){
-        this.state.molecularWeightMin = e.target.value;
+        this.state.molecularWeightMax = e.target.value;
 
         if( (this.state.molecularWeightMin != "" && this.state.molecularWeightMin != null) || (this.state.molecularWeightMax != "" && this.state.molecularWeightMax != null)  ) {
             this.state.molecularWeightSubmitted = true;

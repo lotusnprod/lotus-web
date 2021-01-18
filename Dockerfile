@@ -1,6 +1,6 @@
 FROM openjdk:8u171-slim
 
-EXPOSE 8091
+EXPOSE 8092
 VOLUME /tmp
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar

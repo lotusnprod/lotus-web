@@ -3,6 +3,7 @@ version: '3.2'
 services:
   lotus-online:
     build: '.'
+    restart: always
     image: nponline/lotusweb:latest
     container_name: lotus-online
     volumes:
@@ -16,6 +17,7 @@ services:
 
   npoc-mongo-db:
     image: mongo:4.0.6
+    restart: always
     command: mongod --port 27019
     ports:
       - '27019:27019'
