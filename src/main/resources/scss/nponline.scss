@@ -9,7 +9,7 @@ $container-max-widths: (
 );
 
 $theme-colors: (
-        "primary": #3fbaa0
+        "primary": #16ba7a
 );
 
 $enable-rounded: false;
@@ -66,6 +66,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .compoundCardItem {
   width: 100%;
+  min-width: 800px;
+}
+.compoundCardRow{
+  min-width: 800px;
 }
 
 .compoundCardRow:before {
@@ -75,6 +79,7 @@ h1, h2, h3, h4, h5, h6 {
   height: $coconut-header-height;
   visibility: hidden;
   pointer-events: none;
+
 }
 
 .card table tr td {
@@ -112,6 +117,11 @@ table tr td, table tr th {
   top: 0;
   bottom: 0;
   padding-top: $coconut-header-height;
+  min-width: 220px;
+}
+
+#npcompoundbigcard{
+  min-width: 800px;
 }
 
 #structureSearchEditor {

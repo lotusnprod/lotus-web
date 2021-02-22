@@ -1,9 +1,6 @@
 ### Citation guidelines
 
-If you use data from COCONUT Online, appropriate citation enables readers to locate the original source of the work. 
-
-Cite as: Maria Sorokina, & Christoph Steinbeck. (2020). COCONUT: the COlleCtion of Open NatUral producTs. (Version 4) (Data set). Zenodo. http://doi.org/10.5281/zenodo.3778405
-
+If you use data from LOTUS Online, appropriate citation enables readers to locate the original source of the work. 
 
 
 
@@ -19,7 +16,7 @@ The InChI is a non-proprietary identifier for chemical substances that is widely
 The InChIKey is a 25-character hashed version of the full InChI, designed to allow for easy web searches of chemical compounds. InChIKeys consist of 14 characters resulting from a hash of the connectivity information from the full InChI string, followed by a hyphen, followed by 8 characters resulting from a hash of the remaining layers of the InChI, followed by a single character indicating the version of InChI used, followed by single checksum character. Therefore, when the user enters the InChl key, the software output will be a single compound that is recognized by a particular InChl key.
 #### Molecular formula
 The molecular formula is a type of chemical formula that shows the kinds of atoms and the number of each kind in a single molecule of a particular compound. The molecular formula doesn’t show any information about the molecule structure. The structures and characteristics of compounds with the same molecular formula may vary significantly. Hence, by entering a molecular formula into the search bar, the software output will be a group of compounds with specified atoms and their numbers within a single molecule.  
-#### Coconut ID
+#### LOTUS ID
 Every natural product in our database has its unique identification number that may be used for search purposes exclusively at our site.
 
 
@@ -80,22 +77,22 @@ There are following search options via Rest API:
 1. The user should enter the SMILES structural formula of the molecule after which software searches for the corresponding InChl match in the database.
 Example: URL link for O=C1OC(C(O)=C1O)CO  search
 
-    https://coconut.naturalproducts.net/api/search/exact-structure?type=inchi&smiles=O=C1OC(C(O)=C1O)CO 
+    https://lotus.naturalproducts.net/api/search/exact-structure?type=inchi&smiles=O=C1OC(C(O)=C1O)CO 
     
 2. The user should enter the SMILES structural formula of the molecule  after which software searches for the particular natural product by matching the same SMILES formula in the database. 
 Example: URL link for O=C1OC(C(O)=C1O)CO  search
 
-    https://coconut.naturalproducts.net/api/search/exact-structure?type=smiles&smiles=O=C1OC(C(O)=C1O)CO    
+    https://lotus.naturalproducts.net/api/search/exact-structure?type=smiles&smiles=O=C1OC(C(O)=C1O)CO    
 
 In both cases, the user should use the provided URL links by modifying the part after the equals sign where he should write the formula of his interest.
 
 
 #### Simple search
 
-The user may pursue a simple search by entering the following: Coconut ID, InChl, InChl key, and molecule name. 
-Example: URL link for searching of a particular compound by entering its Coconut ID
+The user may pursue a simple search by entering the following: LOTUS ID, InChl, InChl key, and molecule name. 
+Example: URL link for searching of a particular compound by entering its LOTUS ID
 
-    https://coconut.naturalproducts.net/api/search/simple?query=CNP0253154 
+    https://lotus.naturalproducts.net/api/search/simple?query=LTS0253154 
     
 The user should use the same URL link by modifying the part after the equals sign where he should write the desired compound  in any of the above-mentioned forms. The user may enter a compound in any of the four available forms without specifying which form he used.
 
@@ -103,7 +100,7 @@ The user should use the same URL link by modifying the part after the equals sig
 
 An example of URL link for substructure search:
 
-    https://coconut.naturalproducts.net/api/search/substructure?type=default&max-hits=100&smiles=O=C1OC(C(O)=C1O)CO 
+    https://lotus.naturalproducts.net/api/search/substructure?type=default&max-hits=100&smiles=O=C1OC(C(O)=C1O)CO 
 
 The user should use the above-presented URL link by adjusting the following options:
 
@@ -127,30 +124,20 @@ The list of  available sections at the natural products page:
 * Representations
 * Synonyms
 * Molecular properties
+* Taxonomic data about the known organisms that produce the natural product and the corresponding reference
 * Molecular descriptors
-* Note: We could write here about the software/application that was used for computation.
-* Known stereochemical variants
-* References (literature)
-* Cross references to other chemical databases  
+
 
 
 
 
 ###  Downloads
 
-COCONUT Online offers the different download options of fragments or a complete database with all information included.
+LOTUS Online offers the different download options of fragments or a complete database with all information included.
 
 1. Download Natural Products Structures in SDF format. The SDF (structure data file) represents a chemical data file format developed by MDL. In this type of format, the natural products are delimited by lines consisting of four dollar signs ($$$$). All associated data items are denoted for every natural product in the database.
-2. Download the complete COCONUT dataset as a MongoDB dump. Using this option, all datasets are imported with the same visual depiction as it is at the Website.
+2. Download the complete LOTUS dataset as a MongoDB dump. Using this option, all datasets are imported with the same visual depiction as it is at the Website.
 3. Download Natural Products Structures in SMILES format  
-
-
-
-
-### Data sources  
-
-COCONUT Online uses more than 50 open natural product resources.  One of the options of advanced search is the specification of one or more available resources where the search is going to be pursued.
-
 
 
 

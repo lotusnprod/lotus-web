@@ -35,7 +35,7 @@ export default class Download extends React.Component {
                 </Row>
                 <Row>
                     <Col>
-                        <i>LOTUS version from October 2020</i>
+                        <i>LOTUS version from February 2021</i>
                     </Col>
                 </Row>
 

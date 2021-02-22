@@ -21,7 +21,7 @@ export default class NavigationSidebar extends React.Component {
         });
 
         return (
-            <Nav className="flex-column" id="compoundCardSidebar">
+            <Nav className="flex-column" id="compoundCardSidebar" role="navigation">
                 <HashRouter hashType="noslash">
                     {navigationItems}
                 </HashRouter>

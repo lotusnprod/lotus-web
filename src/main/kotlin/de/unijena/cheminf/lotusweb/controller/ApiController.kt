@@ -200,8 +200,37 @@ class ApiController(val lotusUniqueNaturalProductRepository: LotusUniqueNaturalP
         }
     }
 
+    /**
+     * Search by mass
+     */
+    @RequestMapping("/search/molweight")
+    fun massSearch(@RequestParam("minMass") minMass:String, @RequestParam("maxMass") maxMass:String, @RequestParam("maxHits", required=false) maxHits:String ): Map<String, Any>{
+        var minM:Double? = minMass.toDoubleOrNull()
+        var maxM:Double? = maxMass.toDoubleOrNull()
+        var maxNP:Int? = maxHits.toIntOrNull()
+
+        try {
+            return this.doMassSearch(minM, maxM, maxNP)
+        }catch (ex: Exception){
+
+            when(ex) {
+                is MongoCommandException, is OutOfMemoryError -> {
+                    val other: List<LotusUniqueNaturalProduct> = emptyList()
+                    return mapOf(
+                            "count" to 0,
+                            "naturalProducts" to  other
+                    )
+                }
+                else -> throw ex
+            }
+
+        }
+
+    }
 
 
+
+/*
     /**
      *  Searches by chem class type
      */
@@ -228,14 +257,14 @@ class ApiController(val lotusUniqueNaturalProductRepository: LotusUniqueNaturalP
         }
     }
 
-
+*/
 
     /**
      *  ************************************************************************************************
      *  Search functions
      */
 
-    fun doChemclassSearch(query: String): Map<String, Any>{
+    /*fun doChemclassSearch(query: String): Map<String, Any>{
 
         println("do chem class search")
 
@@ -254,7 +283,72 @@ class ApiController(val lotusUniqueNaturalProductRepository: LotusUniqueNaturalP
                 "naturalProducts" to results
         )
 
+    }*/
+
+
+    fun doMassSearch(minMass:Double?, maxMass:Double?, maxHits:Int?): Map<String, Any>{
+        println("do mass search")
+
+        var maxResults = 100
+
+        if(maxHits != null ){
+            maxResults = maxHits
+        }
+
+
+
+        if(minMass != null && maxMass != null){
+            println("both min and max")
+            var results = this.lotusUniqueNaturalProductRepository.minMaxMolecularWeightSearch(minMass, maxMass, maxResults)
+            println(results.size)
+
+            println("returning")
+
+            return mapOf(
+                    "count" to results.size,
+                    "naturalProducts" to results
+            )
+        }else if(minMass != null && maxMass == null){
+            println("only min")
+            var results = this.lotusUniqueNaturalProductRepository.minMolecularWeightSearch(minMass, maxResults)
+            println(results.size)
+
+            println("returning")
+
+            return mapOf(
+                    "count" to results.size,
+                    "naturalProducts" to results
+            )
+        }else if(minMass == null && maxMass != null){
+            println("only max")
+            var results = this.lotusUniqueNaturalProductRepository.maxMolecularWeightSearch(maxMass, maxResults)
+            println(results.size)
+
+            println("returning")
+
+            return mapOf(
+                    "count" to results.size,
+                    "naturalProducts" to results
+            )
+        }else{
+            println("0")
+
+            println("returning nothing")
+
+            var results = arrayListOf<LotusUniqueNaturalProduct>()
+
+            return mapOf(
+                    "count" to 0,
+                    "naturalProducts" to results
+            )
+        }
+
+
+
+
     }
+
+
 
 
     fun doAdvancedSearch(maxHits:Int?, advancedSearchModel: AdvancedSearchModel) : Map<String, Any>{
@@ -290,7 +384,7 @@ class ApiController(val lotusUniqueNaturalProductRepository: LotusUniqueNaturalP
             var queryInchi =  gen.getInchi()
 
 
-            val results = this.lotusUniqueNaturalProductRepository.findByInchi(queryInchi)
+            val results = this.lotusUniqueNaturalProductRepository.findByInchiOrInchi2D(queryInchi)
 
             return mapOf(
                     "originalQuery" to smiles,
@@ -313,7 +407,7 @@ class ApiController(val lotusUniqueNaturalProductRepository: LotusUniqueNaturalP
             val querySmiles = smilesGenerator.create(queryAC)
 
 
-            val results = this.lotusUniqueNaturalProductRepository.findByClean_smiles(querySmiles)
+            val results = this.lotusUniqueNaturalProductRepository.findBySmiles2DOrSmiles(querySmiles)
 
             return mapOf(
                     "originalQuery" to smiles,
@@ -369,10 +463,10 @@ class ApiController(val lotusUniqueNaturalProductRepository: LotusUniqueNaturalP
                 val querySmiles = this.smilesGenerator.create(queryAC)
                 determinedInputType = "SMILES"
                 println("detected SMILES")
-                naturalProducts = this.lotusUniqueNaturalProductRepository.findByUnique_smiles(querySmiles)
+                naturalProducts = this.lotusUniqueNaturalProductRepository.findBySmiles2DOrSmiles(querySmiles)
                 if (naturalProducts.isEmpty()) {
                     println("second try SMILES")
-                    naturalProducts = this.lotusUniqueNaturalProductRepository.findByClean_smiles(querySmiles)
+                    naturalProducts = this.lotusUniqueNaturalProductRepository.findBySmiles2DOrSmiles(querySmiles)
 
                 }
             }catch (e: InvalidSmilesException){
@@ -382,11 +476,11 @@ class ApiController(val lotusUniqueNaturalProductRepository: LotusUniqueNaturalP
                     determinedInputType = "LOTUS ID"
                 }
                 else if(inchiPattern.containsMatchIn(query)){
-                    naturalProducts =  this.lotusUniqueNaturalProductRepository.findByInchi(query)
+                    naturalProducts =  this.lotusUniqueNaturalProductRepository.findByInchiOrInchi2D(query)
                     determinedInputType = "InChi"
                 }
                 else if(inchikeyPattern.containsMatchIn(query)){
-                    naturalProducts =  this.lotusUniqueNaturalProductRepository.findByInchikey(query)
+                    naturalProducts =  this.lotusUniqueNaturalProductRepository.findByInchikeyOrInchikey2D(query)
                     determinedInputType = "InChi Key"
                 }
                 else if(molecularFormulaPattern.containsMatchIn(query)){
@@ -421,11 +515,11 @@ class ApiController(val lotusUniqueNaturalProductRepository: LotusUniqueNaturalP
             determinedInputType = "LOTUS ID"
         }
         else if(inchiPattern.containsMatchIn(query)){
-            naturalProducts =  this.lotusUniqueNaturalProductRepository.findByInchi(query)
+            naturalProducts =  this.lotusUniqueNaturalProductRepository.findByInchiOrInchi2D(query)
             determinedInputType = "InChi"
         }
         else if(inchikeyPattern.containsMatchIn(query)){
-            naturalProducts =  this.lotusUniqueNaturalProductRepository.findByInchikey(query)
+            naturalProducts =  this.lotusUniqueNaturalProductRepository.findByInchikeyOrInchikey2D(query)
             determinedInputType = "InChi Key"
         }
         else if(molecularFormulaPattern.containsMatchIn(query)){

@@ -10,11 +10,15 @@ const React = require("react");
 export default class NaturalProductCardItem extends React.Component {
     render() {
         const linkToCompoundPage = "/compound/lotus_id/" + this.props.naturalProduct.lotus_id;
-        const structure = Utils.drawMoleculeBySmiles(this.props.naturalProduct.smiles);
+        const structure = Utils.drawMoleculeBySmiles(this.props.naturalProduct.smiles2D);
+
+        console.log(this.props.naturalProduct);
 
         //TODO either here (test for Tanimoto field), either create a Tanimoto card
 
-        var cardTitle = "";
+        var cardTitle = <Card.Link href={linkToCompoundPage} className="cardItemHeadline">{this.props.naturalProduct.lotus_id}</Card.Link>;
+
+
 
         if(this.props.naturalProduct.hasOwnProperty('tanimoto') && this.props.naturalProduct.tanimoto &&  this.props.naturalProduct.tanimoto>0 ){
 
@@ -25,8 +29,6 @@ export default class NaturalProductCardItem extends React.Component {
                 <Card.Link href={linkToCompoundPage} className="cardItemHeadline">{this.props.naturalProduct.lotus_id}&nbsp;&nbsp;</Card.Link>
                 <p style={{color: "#FC6B1E"}}>{tanomotoScore} %</p>
             </>;
-        }else{
-            cardTitle = <Card.Link href={linkToCompoundPage} className="cardItemHeadline">{this.props.naturalProduct.lotus_id}</Card.Link>;
         }
 
 
@@ -37,7 +39,7 @@ export default class NaturalProductCardItem extends React.Component {
                     <Card.Title>
                         {cardTitle}
                     </Card.Title>
-                    <Card.Subtitle>{this.props.naturalProduct.name ? this.props.naturalProduct.name : "no name available"}</Card.Subtitle>
+                    <Card.Subtitle>{Utils.capitalize(this.props.naturalProduct.traditional_name) || this.props.naturalProduct.iupac_name }</Card.Subtitle>
                     <Table>
                         <tbody>
                         <tr>
@@ -48,10 +50,7 @@ export default class NaturalProductCardItem extends React.Component {
                             <td>Mol. weight</td>
                             <td>{ Math.round((this.props.naturalProduct.molecular_weight + Number.EPSILON)  * 100) / 100 }</td>
                         </tr>
-                        <tr>
-                            <td>NP-likeness</td>
-                            <td>{ Math.round((this.props.naturalProduct.npl_score + Number.EPSILON)  * 100) / 100 }</td>
-                        </tr>
+
                         </tbody>
                     </Table>
                 </Card.Body>

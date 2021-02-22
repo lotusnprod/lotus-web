@@ -12,4 +12,10 @@ public interface LotusUniqueNaturalProductRepositoryCustom {
 
     List<LotusUniqueNaturalProduct> similaritySearch(ArrayList<Integer> reqbits, ArrayList<Integer> qfp, Integer qmin, Integer qmax, Integer qn, Double threshold, Integer maxResults );
 
+
+    List<LotusUniqueNaturalProduct> minMaxMolecularWeightSearch(Double minMolecularWeight, Double maxMolecularWeight, Integer maxResults);
+
+    List<LotusUniqueNaturalProduct> minMolecularWeightSearch(Double minMolecularWeight, Integer maxResults);
+
+    List<LotusUniqueNaturalProduct> maxMolecularWeightSearch(Double maxMolecularWeight, Integer maxResults);
 }

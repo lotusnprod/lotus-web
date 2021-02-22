@@ -1,9 +1,12 @@
 package de.unijena.cheminf.lotusweb.lotusmodel.mongocollections;
 
+import de.unijena.cheminf.lotusweb.lotusmodel.mongocollections.TaxonomyReferenceObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 
 @Document
@@ -12,24 +15,20 @@ public class LOTUSSourceNaturalProduct {
     @Id
     public String id;
 
-    //@Indexed(name = "source_index")
-    public String source;
+    public String smiles3d;
 
-    public String originalSmiles;
-
-    public String simpleSmiles;
+    public String smiles2d;
 
     public String absoluteSmiles;
 
-    public String originalInchi;
+    public String inchi3D;
 
-    public String originalInchiKey;
+    public String inchi2D;
 
-    //@Indexed(name = "simpleinchi_index")
-    public String simpleInchi;
+    public String inchikey3D;
 
-    //@Indexed(name = "simpleinchikey_index")
-    public String simpleInchiKey;
+    public String inchikey2D;
+
 
     public String cas;
 
@@ -37,7 +36,6 @@ public class LOTUSSourceNaturalProduct {
 
     public Integer totalAtomNumber;
 
-    public String idInSource;
 
     public String comment;
 
@@ -45,30 +43,22 @@ public class LOTUSSourceNaturalProduct {
 
     public LotusUniqueNaturalProduct lotusUniqueNaturalProduct;
 
-    public ArrayList<String> citation;
+    public TaxonomyReferenceObject taxonomyReferenceObject;
 
-    public ArrayList<Integer> taxid;
+    public String traditionalName;
 
-    public ArrayList<String> organismText;
-
-    public String continent;
-
-    public ArrayList<String> geographicLocation;
-
-    public String name;
+    public String iupacName;
 
     public ArrayList<String> synonyms;
 
+    public String linkToWDstructure;
+
+    public Hashtable<String, String> xrefs;
 
 
     //Constructor
-    public LOTUSSourceNaturalProduct(){}
-
-
-
-
-
-
+    public LOTUSSourceNaturalProduct() {
+    }
 
 
     public String getId() {
@@ -79,60 +69,68 @@ public class LOTUSSourceNaturalProduct {
         this.id = id;
     }
 
-    public String getSource() {
-        return source;
+    public String getSmiles3d() {
+        return smiles3d;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public void setSmiles3d(String smiles3d) {
+        this.smiles3d = smiles3d;
     }
 
-    public String getOriginalSmiles() {
-        return originalSmiles;
+    public String getSmiles2d() {
+        return smiles2d;
     }
 
-    public void setOriginalSmiles(String originalSmiles) {
-        this.originalSmiles = originalSmiles;
+    public void setSmiles2d(String smiles2d) {
+        this.smiles2d = smiles2d;
     }
 
-    public String getSimpleSmiles() {
-        return simpleSmiles;
+    public String getAbsoluteSmiles() {
+        return absoluteSmiles;
     }
 
-    public void setSimpleSmiles(String simpleSmiles) {
-        this.simpleSmiles = simpleSmiles;
+    public void setAbsoluteSmiles(String absoluteSmiles) {
+        this.absoluteSmiles = absoluteSmiles;
     }
 
-    public String getOriginalInchi() {
-        return originalInchi;
+    public String getInchi3D() {
+        return inchi3D;
     }
 
-    public void setOriginalInchi(String originalInchi) {
-        this.originalInchi = originalInchi;
+    public void setInchi3D(String inchi3D) {
+        this.inchi3D = inchi3D;
     }
 
-    public String getOriginalInchiKey() {
-        return originalInchiKey;
+    public String getInchi2D() {
+        return inchi2D;
     }
 
-    public void setOriginalInchiKey(String originalInchiKey) {
-        this.originalInchiKey = originalInchiKey;
+    public void setInchi2D(String inchi2D) {
+        this.inchi2D = inchi2D;
     }
 
-    public String getSimpleInchi() {
-        return simpleInchi;
+    public String getInchikey3D() {
+        return inchikey3D;
     }
 
-    public void setSimpleInchi(String simpleInchi) {
-        this.simpleInchi = simpleInchi;
+    public void setInchikey3D(String inchikey3D) {
+        this.inchikey3D = inchikey3D;
     }
 
-    public String getSimpleInchiKey() {
-        return simpleInchiKey;
+    public String getInchikey2D() {
+        return inchikey2D;
     }
 
-    public void setSimpleInchiKey(String simpleInchiKey) {
-        this.simpleInchiKey = simpleInchiKey;
+    public void setInchikey2D(String inchikey2D) {
+        this.inchikey2D = inchikey2D;
+    }
+
+    public String getCas() {
+        return cas;
+    }
+
+    public void setCas(String cas) {
+        this.cas = cas;
     }
 
     public Integer getHeavyAtomNumber() {
@@ -151,14 +149,6 @@ public class LOTUSSourceNaturalProduct {
         this.totalAtomNumber = totalAtomNumber;
     }
 
-    public String getIdInSource() {
-        return idInSource;
-    }
-
-    public void setIdInSource(String idInSource) {
-        this.idInSource = idInSource;
-    }
-
     public String getComment() {
         return comment;
     }
@@ -166,7 +156,6 @@ public class LOTUSSourceNaturalProduct {
     public void setComment(String comment) {
         this.comment = comment;
     }
-
 
     public String getAcquisition_date() {
         return acquisition_date;
@@ -184,44 +173,28 @@ public class LOTUSSourceNaturalProduct {
         this.lotusUniqueNaturalProduct = lotusUniqueNaturalProduct;
     }
 
-    public ArrayList<String> getCitation() {
-        return citation;
+    public TaxonomyReferenceObject getTaxonomyReferenceObject() {
+        return taxonomyReferenceObject;
     }
 
-    public void setCitation(ArrayList<String> citation) {
-        this.citation = citation;
+    public void setTaxonomyReferenceObject(TaxonomyReferenceObject taxonomyReferenceObject) {
+        this.taxonomyReferenceObject = taxonomyReferenceObject;
     }
 
-    public ArrayList<Integer> getTaxid() {
-        return taxid;
+    public String getTraditionalName() {
+        return traditionalName;
     }
 
-    public void setTaxid(ArrayList<Integer> taxid) {
-        this.taxid = taxid;
+    public void setTraditionalName(String traditionalName) {
+        this.traditionalName = traditionalName;
     }
 
-    public String getContinent() {
-        return continent;
+    public String getIupacName() {
+        return iupacName;
     }
 
-    public void setContinent(String continent) {
-        this.continent = continent;
-    }
-
-    public ArrayList<String> getOrganismText() {
-        return organismText;
-    }
-
-    public void setOrganismText(ArrayList<String> organismText) {
-        this.organismText = organismText;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setIupacName(String iupacName) {
+        this.iupacName = iupacName;
     }
 
     public ArrayList<String> getSynonyms() {
@@ -232,30 +205,19 @@ public class LOTUSSourceNaturalProduct {
         this.synonyms = synonyms;
     }
 
-    public ArrayList<String> getGeographicLocation() {
-        return geographicLocation;
+    public String getLinkToWDstructure() {
+        return linkToWDstructure;
     }
 
-    public void setGeographicLocation(ArrayList<String> geographicLocation) {
-        this.geographicLocation = geographicLocation;
+    public void setLinkToWDstructure(String linkToWDstructure) {
+        this.linkToWDstructure = linkToWDstructure;
     }
 
-    public String getAbsoluteSmiles() {
-        return absoluteSmiles;
+    public Hashtable<String, String> getXrefs() {
+        return xrefs;
     }
 
-    public void setAbsoluteSmiles(String absoluteSmiles) {
-        this.absoluteSmiles = absoluteSmiles;
+    public void setXrefs(Hashtable<String, String> xrefs) {
+        this.xrefs = xrefs;
     }
-
-    public String getCas() {
-        return cas;
-    }
-
-    public void setCas(String cas) {
-        this.cas = cas;
-    }
-
-
-
 }

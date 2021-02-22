@@ -4,7 +4,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Spinner from "./Spinner";
-import CardBrowser from "./browser/CardBrowser";
+import CardCompoundBrowser from "./compoundbrowser/CardCompoundBrowser";
 import Error from "./Error";
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
@@ -439,7 +439,7 @@ export default class StructureSearch extends React.Component {
                                     </Col>
                                 </Row>
                                 <Row>
-                                    <CardBrowser naturalProducts={ajaxResult.naturalProducts}/>
+                                    <CardCompoundBrowser naturalProducts={ajaxResult.naturalProducts}/>
                                 </Row>
                             </>;
                     } else {

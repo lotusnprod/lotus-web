@@ -28,12 +28,137 @@ public class LotusUniqueNaturalProductRepositoryImpl implements LotusUniqueNatur
 
 
     @Override
+    public List<LotusUniqueNaturalProduct> minMaxMolecularWeightSearch(Double minMolecularWeight, Double maxMolecularWeight, Integer maxResults) {
+
+        List<LotusUniqueNaturalProduct> result ;
+
+        Query advancedQuery = new Query();
+        Criteria bigCriteria = new Criteria();
+
+        ArrayList<Criteria> andCriterias = new ArrayList<>();
+
+
+
+        Criteria c = null;
+
+        if(minMolecularWeight==0 || minMolecularWeight == null || minMolecularWeight.isNaN()){
+            c = where("molecular_weight").lte(maxMolecularWeight);
+
+        }else if(maxMolecularWeight==0 || maxMolecularWeight == null || maxMolecularWeight.isNaN()){
+            c = where("molecular_weight").gte(minMolecularWeight);
+        }else {
+
+            c = where("molecular_weight").lte(maxMolecularWeight).gte(minMolecularWeight);
+
+            advancedQuery.with(Sort.by(Sort.Direction.DESC, "molecular_weight"));
+        }
+
+        andCriterias.add(c);
+
+
+        if (!andCriterias.isEmpty()) {
+            bigCriteria.andOperator(andCriterias.toArray(new Criteria[andCriterias.size()]));
+        }
+
+        advancedQuery.addCriteria(bigCriteria);
+
+
+
+        advancedQuery = advancedQuery.limit(maxResults);
+
+        System.out.println(advancedQuery);
+        result = mongoTemplate.find(advancedQuery , LotusUniqueNaturalProduct.class);
+
+        return result;
+
+    }
+
+    @Override
+    public List<LotusUniqueNaturalProduct> minMolecularWeightSearch(Double minMolecularWeight, Integer maxResults) {
+
+        List<LotusUniqueNaturalProduct> result ;
+
+        Query advancedQuery = new Query();
+        Criteria bigCriteria = new Criteria();
+
+        ArrayList<Criteria> andCriterias = new ArrayList<>();
+
+
+
+        Criteria c = null;
+
+        if(minMolecularWeight != null || !minMolecularWeight.isNaN()){
+            c = where("molecular_weight").gte(minMolecularWeight);
+
+        }
+
+        andCriterias.add(c);
+
+
+        if (!andCriterias.isEmpty()) {
+            bigCriteria.andOperator(andCriterias.toArray(new Criteria[andCriterias.size()]));
+        }
+
+        advancedQuery.addCriteria(bigCriteria);
+
+
+
+        advancedQuery = advancedQuery.limit(maxResults);
+
+        System.out.println(advancedQuery);
+        result = mongoTemplate.find(advancedQuery , LotusUniqueNaturalProduct.class);
+
+        return result;
+
+    }
+
+    @Override
+    public List<LotusUniqueNaturalProduct> maxMolecularWeightSearch(Double maxMolecularWeight, Integer maxResults) {
+
+        List<LotusUniqueNaturalProduct> result ;
+
+        Query advancedQuery = new Query();
+        Criteria bigCriteria = new Criteria();
+
+        ArrayList<Criteria> andCriterias = new ArrayList<>();
+
+
+
+        Criteria c = null;
+
+        if(maxMolecularWeight!=0 || maxMolecularWeight != null || !maxMolecularWeight.isNaN()){
+            c = where("molecular_weight").lte(maxMolecularWeight);
+        }
+
+        andCriterias.add(c);
+
+
+        if (!andCriterias.isEmpty()) {
+            bigCriteria.andOperator(andCriterias.toArray(new Criteria[andCriterias.size()]));
+        }
+
+        advancedQuery.addCriteria(bigCriteria);
+
+
+
+        advancedQuery = advancedQuery.limit(maxResults);
+
+        System.out.println(advancedQuery);
+        result = mongoTemplate.find(advancedQuery , LotusUniqueNaturalProduct.class);
+
+        return result;
+
+    }
+
+
+
+    @Override
     public List<LotusUniqueNaturalProduct> similaritySearch(ArrayList<Integer> reqbits, ArrayList<Integer> qfp, Integer qmin, Integer qmax, Integer qn, Double threshold, Integer maxResults ){
 
         String fMatch1 = "{'$match': {'pfCounts.count': {'$gte': "+qmin+", '$lte': "+qmax+"}, 'pfCounts.bits': {'$in': "+reqbits+"}}}";
 
 
-        String fProjection = "{'$project': { 'tanimoto': {'$let': {  'vars': {'common': {'$size': {'$setIntersection': ['$pfCounts.bits', "+qfp+"]}}}, 'in': {'$divide': ['$$common', {'$subtract': [{'$add': ["+qn+", '$pfCounts.count']}, '$$common']}]}  }},   'coconut_id': 1, 'unique_smiles':1, 'clean_smiles':1, 'molecular_formula':1, 'molecular_weight':1, 'npl_score':1 , 'name':1, 'smiles':1}}";
+        String fProjection = "{'$project': { 'tanimoto': {'$let': {  'vars': {'common': {'$size': {'$setIntersection': ['$pfCounts.bits', "+qfp+"]}}}, 'in': {'$divide': ['$$common', {'$subtract': [{'$add': ["+qn+", '$pfCounts.count']}, '$$common']}]}  }},   'lotus_id': 1, 'smiles2D':1, 'smiles':1, 'molecular_formula':1, 'molecular_weight':1, 'npl_score':1 , 'traditional_name':1}}";
 
 
         String fMatch2 = "{'$match': {'tanimoto': {'$gte': "+threshold+"}}}";
@@ -216,7 +341,7 @@ public class LotusUniqueNaturalProductRepositoryImpl implements LotusUniqueNatur
                 String [] listDatabases = s.split(", ");
 
 
-                ArrayList<Criteria> dbCriterias = new ArrayList<>();
+                /*ArrayList<Criteria> dbCriterias = new ArrayList<>();
 
                 for(String db : listDatabases){
                     Criteria c = new Criteria().where("found_in_databases").all(db);
@@ -236,7 +361,7 @@ public class LotusUniqueNaturalProductRepositoryImpl implements LotusUniqueNatur
                     andCriterias.add(c);
                 } else {
                     orCriterias.add(c);
-                }
+                }*/
 
 
 

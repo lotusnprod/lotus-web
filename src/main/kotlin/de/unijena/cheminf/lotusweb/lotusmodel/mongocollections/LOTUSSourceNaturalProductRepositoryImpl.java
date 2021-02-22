@@ -22,9 +22,9 @@ public class LOTUSSourceNaturalProductRepositoryImpl implements LOTUSSourceNatur
 
 
     @Override
-    public List<String> findUniqueInchiKeys(){
+    public List<String> findUniqueInchikey3D(){
 
-        GroupOperation groupByInchikey = group("simpleInchiKey");
+        GroupOperation groupByInchikey = group("inchikey3D");
 
         Aggregation aggregation = newAggregation(groupByInchikey);
         AggregationResults<String> groupResults = mongoTemplate.aggregate(aggregation, "lOTUSSourceNaturalProduct", String.class);
@@ -37,10 +37,6 @@ public class LOTUSSourceNaturalProductRepositoryImpl implements LOTUSSourceNatur
         return mongoTemplate.query(LOTUSSourceNaturalProduct.class).distinct("simpleInchiKey").all()  ;
     }*/
 
-    @Override
-    public List<Object> findUniqueSourceNames(){
-        return mongoTemplate.query(LOTUSSourceNaturalProduct.class).distinct("source").all() ;
-    }
 
 
 }

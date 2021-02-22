@@ -1,5 +1,5 @@
 import Container from "react-bootstrap/Container";
-import CardBrowser from "./browser/CardBrowser";
+import CardCompoundBrowser from "./compoundbrowser/CardCompoundBrowser";
 import Row from "react-bootstrap/Row";
 import Error from "./Error";
 import Spinner from "./Spinner";
@@ -164,7 +164,7 @@ export default class ChemSearchResult extends React.Component {
                     <br/>
                     {resultDlRow}
                     <br/>
-                    {searchResult && <CardBrowser naturalProducts={searchResult.naturalProducts}/>}
+                    {searchResult && <CardCompoundBrowser naturalProducts={searchResult.naturalProducts}/>}
                 </Container>
             );
         }

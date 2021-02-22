@@ -22,7 +22,7 @@ export default class HeaderNavBar extends React.Component {
                             </LinkContainer>
                         </Nav.Item>
                         <Dropdown as={NavItem}>
-                            <Dropdown.Toggle as={NavLink}>Browser</Dropdown.Toggle>
+                            <Dropdown.Toggle as={NavLink}>Compound Browser</Dropdown.Toggle>
                             <Dropdown.Menu>
                                 <LinkContainer to="/browser/table" activeClassName="active">
                                     <Dropdown.Item>

@@ -26,10 +26,6 @@ export default class Documentation extends React.Component {
                 </Row>
                 <br/>
                 <Row>
-                    <p style={{textAlign: "justify"}}>COCONUT (COlleCtion of Open Natural ProdUcTs) Online is an open source project for Natural Products (NPs) storage, search and analysis. It gathers data from over 50 open NP resources and is available free of charge and without any restriction.
-                    It currently contains 426 895 unique "flat" NPs, and, when available, their known stereochemical forms, literature, organisms that produce them, natural geographical presence and diverse pre-computed molecular properties.
-                    </p>
-                    <p style={{textAlign: "justify"}}>The COCONUT logo combines an open coconut with a molecule of 6-Amyl-α-pyrone, a coconut-scented insaturated lactone produced by the Trichodema species (fungi).</p>
 
                     <p style={{textAlign: "justify"}}> Please submit bug reports, feature requests and general issues through the issues tracker at <a href="https://github.com/mSorok/NaturalProductsOnline/issues" target="_blank">GitHub</a>. </p>
                 </Row>
@@ -39,7 +35,7 @@ export default class Documentation extends React.Component {
                 </Row>
 
                 <Row className="justify-content-center">
-                    <p>COCONUT online is part of the <a href="https://naturalproducts.net" target="_blank">Natural Products Portal</a>.</p>
+                    <p>LOTUS online is part of the <a href="https://naturalproducts.net" target="_blank">Natural Products Portal</a>.</p>
                 </Row>
 
 

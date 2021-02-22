@@ -66,7 +66,7 @@ export default class HeaderSearchBar extends React.Component {
                     <InputGroup>
                         <Form.Control id="searchInput"
                                       type="text"
-                                      placeholder="Molecule name, InChI, InChIKey, formula, LOTUS id, SMILES, chemical class"
+                                      placeholder="Molecule name, InChI, InChIKey, formula, LOTUS id, SMILES, organism name"
                                       onKeyPress={this.handleSearchSubmitKey}
                                       onChange={this.handleSearchStringChange}
                         />

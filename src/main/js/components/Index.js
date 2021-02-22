@@ -1,5 +1,5 @@
 import Introduction from "./Introduction";
-import Browser from "./browser/Browser";
+import CompoundBrowser from "./compoundbrowser/CompoundBrowser";
 import Container from "react-bootstrap/Container";
 
 const React = require("react");
@@ -11,7 +11,7 @@ export default class Index extends React.Component {
             <Container>
                 <Introduction />
                 <br/>
-                <Browser />
+                <CompoundBrowser />
             </Container>
         );
     }

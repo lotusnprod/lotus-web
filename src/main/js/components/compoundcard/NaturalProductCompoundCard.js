@@ -14,8 +14,7 @@ import KnownStereochemicalVariants from "./KnownStereochemicalVariants";
 import References from "./References";
 import Synonyms from "./Synonyms";
 import ChemClassification from "./ChemClassification";
-import Organisms from "./Organisms";
-import Geography from "./Geography";
+import TaxonomyReferenceMap from "./TaxonomyReferenceMap";
 
 const React = require("react");
 const restClient = require("../../restClient");
@@ -68,13 +67,11 @@ export default class NaturalProductCompoundCard extends React.Component {
             const compoundCardItems = [
                 "overview",
                 "representations",
-                "synonyms",
+                "taxonomy_&_references",
                 "molecular_properties",
                 "molecular_descriptors",
-                "known_stereochemical_variants",
-                "references",
-                "chemical_classification",
-                "cross_references"
+
+                //"cross_references"
 
                 //Idea: add an empty string at the beginning?
 
@@ -82,12 +79,12 @@ export default class NaturalProductCompoundCard extends React.Component {
 
 
             return (
-                <Container>
+                <Container id="npcompoundbigcard">
                     <Row>
-                        <Col sm={3}>
+                        {/*<Col sm={3}>
                             <NavigationSidebar navigationItems={compoundCardItems} />
-                        </Col>
-                        <Col sm={9}>
+                        </Col>*/}
+                        <Col >{/*sm={9}*/}
                             <Row id={compoundCardItems[0]} className="compoundCardRow">
                                 <Overview naturalProduct={naturalProduct}/>
                             </Row>
@@ -97,7 +94,7 @@ export default class NaturalProductCompoundCard extends React.Component {
                             </Row>
                             <br/>
                             <Row id={compoundCardItems[2]} className="compoundCardRow">
-                                <Synonyms naturalProduct={naturalProduct}/>
+                                <TaxonomyReferenceMap naturalProduct={naturalProduct}/>
                             </Row>
                             <br/>
                             <Row id={compoundCardItems[3]} className="compoundCardRow">
@@ -109,24 +106,8 @@ export default class NaturalProductCompoundCard extends React.Component {
                             </Row>
 
                             <br/>
-                            <Row id={compoundCardItems[5]} className="compoundCardRow">
-                                <KnownStereochemicalVariants naturalProduct={naturalProduct}/>
-                            </Row>
 
-                            <br/>
-                            <Row id={compoundCardItems[6]} className="compoundCardRow">
-                                <References naturalProduct={naturalProduct}/>
-                            </Row>
-                            <br/>
-                            <Row id={compoundCardItems[7]} className="compoundCardRow">
-                                <ChemClassification naturalProduct={naturalProduct}/>
-                            </Row>
-                            <br/>
 
-                            <Row id={compoundCardItems[8]} className="compoundCardRow">
-                                <CrossReferences naturalProduct={naturalProduct}/>
-                            </Row>
-                            <br/>
                         </Col>
                     </Row>
                 </Container>

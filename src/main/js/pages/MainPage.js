@@ -12,7 +12,7 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import Documentation from "../components/Documentation";
 import Container from "react-bootstrap/Container";
 import Download from "../components/Download";
-import Browser from "../components/browser/Browser";
+import CompoundBrowser from "../components/compoundbrowser/CompoundBrowser";
 import NotFound from "../components/NotFound";
 import SearchResult from "../components/SearchResult";
 import ChemSearchResult from "../components/ChemSearchResult";
@@ -40,7 +40,7 @@ class MainPage extends React.Component {
             <Switch>
             <Route exact path="/" component={Index}/>
         <Route path="/documentation" component={Documentation}/>
-        <Route path="/browser*" component={Browser}/>
+        <Route path="/browser*" component={CompoundBrowser}/>
         <Route path="/compound/:identifier(inchi|inchikey|lotus_id|id)/:identifierValue" component={NaturalProductCompoundCard}/>
         <Route path="/download" component={Download}/>
         <Route path="/search/advanced" component={AdvancedSearch}/>

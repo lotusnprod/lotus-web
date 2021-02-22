@@ -4,7 +4,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Spinner from "./Spinner";
-import CardBrowser from "./browser/CardBrowser";
+import CardCompoundBrowser from "./compoundbrowser/CardCompoundBrowser";
 import Error from "./Error";
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
@@ -133,10 +133,7 @@ export default class AdvancedSearch extends React.Component {
             spiroMax: "",
             spiroLogic: "AND",
 
-            dbSelected: false,
-            dbChoice: "",
-            orAndDbChoice: "OR",
-            dbChoiceLogic: "AND",
+
 
 
 
@@ -214,11 +211,6 @@ export default class AdvancedSearch extends React.Component {
         this.handleSpiroLogic =  this.handleSpiroLogic.bind(this);
 
 
-        this.handleDBselect = this.handleDBselect.bind(this);
-        this.handleDBSelectLogic = this.handleDBSelectLogic.bind(this);
-        this.handleDBSelectAllOne = this.handleDBSelectAllOne.bind(this);
-
-
         this.handleSDFDownload = this.handleSDFDownload.bind(this);
 
 
@@ -269,7 +261,7 @@ export default class AdvancedSearch extends React.Component {
             if (this.state.molecularFormulaSubmitted || this.state.molecularWeightSubmitted || this.state.heavyAtomsSubmitted || this.state.numberOfCarbonsSubmitted
                 || this.state.numberOfOxygensSubmitted || this.state.numberOfNitrogensSubmitted || this.state.numberOfRingsSubmitted || this.state.containSugarsSubmitted
                 || this.state.bondCountSubmitted || this.state.nplScoreSubmitted || this.state.apolSubmitted || this.state.alogpSubmitted || this.state.fsp3Submitted
-                || this.state.lipinskiSubmitted || this.state.spiroSubmitted || this.state.dbSelected) {
+                || this.state.lipinskiSubmitted || this.state.spiroSubmitted ) {
 
                 this.setState({
                     searchSubmitted: true
@@ -1097,7 +1089,7 @@ export default class AdvancedSearch extends React.Component {
                                 </Col>
                             </Row>
                             <Row>
-                                <CardBrowser naturalProducts={ajaxResult.naturalProducts}/>
+                                <CardCompoundBrowser naturalProducts={ajaxResult.naturalProducts}/>
                             </Row>
                         </>
                 } else {
@@ -1549,42 +1541,6 @@ export default class AdvancedSearch extends React.Component {
 
 
 
-
-                <h3>Data sources</h3>
-
-                <Form.Group>
-
-
-                    <Form.Row>
-                        <Col>
-                            <Form onChange = {this.handleDBselect}>
-                            <SourcesList/>
-                            </Form>
-                        </Col>
-
-                        <Col md="auto">
-                            <Form.Control name="select-db-all-or" as="select" onChange={this.handleDBSelectAllOne}>
-                                <option value="OR">IN AT LEAST ONE</option>
-                                <option value="AND">IN ALL</option>
-
-                            </Form.Control>
-                            <Form.Text className="text-muted">Select if query present in ALL the selected databases or in AT LEAST ONE</Form.Text>
-                        </Col>
-
-                        <Col md="auto">
-                            <Form.Control name="select-db-and-or" as="select" onChange={this.handleDBSelectLogic}>
-                                <option value="AND">AND</option>
-                                <option value="OR">OR</option>
-                            </Form.Control>
-                            <Form.Text className="text-muted">Select if this criteria adds to others with AND or with OR</Form.Text>
-                        </Col>
-
-
-
-                    </Form.Row>
-
-
-                </Form.Group>
 
 
 

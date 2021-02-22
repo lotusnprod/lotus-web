@@ -42,12 +42,12 @@ export default class Utils {
 
         for(let i=0; i<npList.length; i++){
             try {
-                const npMolecule = OpenChemLib.Molecule.fromSmiles(npList[i].clean_smiles);
+                const npMolecule = OpenChemLib.Molecule.fromSmiles(npList[i].smiles);
                 sdfString+= npMolecule.toMolfileV3();
                 sdfString+= "> <lotus_id> \n";
                 sdfString+= npList[i].lotus_id +"\n\n";
                 sdfString+= "> <SMILES> \n";
-                sdfString+= npList[i].clean_smiles +"\n\n";
+                sdfString+= npList[i].smiles +"\n\n";
                 sdfString+= "$$$$\n";
             } catch(e) {
                 console.log(e.name + " in OpenChemLib: " + e.message);

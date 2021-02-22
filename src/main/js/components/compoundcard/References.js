@@ -25,6 +25,7 @@ export default class  References  extends React.Component {
             for(let i=0; i<naturalProduct.citationDOI.length; i++) {
 
                 if(naturalProduct.citationDOI[i].length>=5) {
+
                     let ref_link = "";
 
                     if (RegExp(/^\d+$/).test(naturalProduct.citationDOI[i])) {
