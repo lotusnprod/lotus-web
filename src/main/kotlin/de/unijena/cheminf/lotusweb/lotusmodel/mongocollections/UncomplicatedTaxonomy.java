@@ -8,6 +8,11 @@ public class UncomplicatedTaxonomy {
 
     String organism_url;
 
+    public String wikidata_id;
+
+
+    public String reference_wikidata_id;
+
 
 
     String domain = null;
@@ -32,6 +37,22 @@ public class UncomplicatedTaxonomy {
     public UncomplicatedTaxonomy() {
     }
 
+
+    public String getWikidata_id() {
+        return wikidata_id;
+    }
+
+    public void setWikidata_id(String wikidata_id) {
+        this.wikidata_id = wikidata_id;
+    }
+
+    public String getReference_wikidata_id() {
+        return reference_wikidata_id;
+    }
+
+    public void setReference_wikidata_id(String reference_wikidata_id) {
+        this.reference_wikidata_id = reference_wikidata_id;
+    }
 
     public String getCleaned_organism_id() {
         return cleaned_organism_id;

@@ -23,13 +23,11 @@ export default class TaxonomyReferenceMap extends React.Component{
         var dois = [];
         for(var k in taxonomyReferenceObjects) dois.push(k);
 
-        //TODO replace $x$x$ by . in the DOIs
 
 
         let full_table = [];
 
         for(let i=0; i<dois.length; i++){
-
 
             let all_db_tabs = [];
 
@@ -232,7 +230,8 @@ export default class TaxonomyReferenceMap extends React.Component{
 
                 taxo_table.push(
 
-                    <Table id={{i}} size="sm" className='mt-4 align-items-left'  bordered hover >
+                    <Table id={{i}} size="sm" className=' align-items-left' striped bordered hover >
+                        {/*mt-xl-4*/}
                         <thead >
                             <tr>
                                 {taxo_header}
@@ -248,7 +247,8 @@ export default class TaxonomyReferenceMap extends React.Component{
 
 
                 all_db_tabs.push(
-                    <Tab eventKey={db_names[j].replaceAll(" ","_")} title={db_names[j]} tabClassName="border-top">
+                    <Tab eventKey={db_names[j].replaceAll(" ","_")} title={db_names[j]} >
+                        <br/>
                         {taxo_table}
                     </Tab>
                 );
@@ -261,7 +261,7 @@ export default class TaxonomyReferenceMap extends React.Component{
                 <Row className="align-items-center" style={{flex:1}} >
 
                     <Col xs={10}>
-                        <Tabs id = "taxo_tabs" defaultActiveKey="Open_Tree_of_Life">
+                        <Tabs id = "taxo_tabs" defaultActiveKey="Open_Tree_of_Life" variant="pills" >
                             {all_db_tabs}
                         </Tabs>
                     </Col>

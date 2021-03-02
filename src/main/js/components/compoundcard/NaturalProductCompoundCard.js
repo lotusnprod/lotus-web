@@ -68,6 +68,7 @@ export default class NaturalProductCompoundCard extends React.Component {
                 "overview",
                 "representations",
                 "taxonomy_&_references",
+                "chemical_ontology",
                 "molecular_properties",
                 "molecular_descriptors",
 
@@ -98,10 +99,14 @@ export default class NaturalProductCompoundCard extends React.Component {
                             </Row>
                             <br/>
                             <Row id={compoundCardItems[3]} className="compoundCardRow">
-                                <MolecularProperties naturalProduct={naturalProduct}/>
+                                <ChemClassification naturalProduct={naturalProduct}/>
                             </Row>
                             <br/>
                             <Row id={compoundCardItems[4]} className="compoundCardRow">
+                                <MolecularProperties naturalProduct={naturalProduct}/>
+                            </Row>
+                            <br/>
+                            <Row id={compoundCardItems[5]} className="compoundCardRow">
                                 <MolecularDescriptors naturalProduct={naturalProduct}/>
                             </Row>
 

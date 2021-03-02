@@ -9,7 +9,7 @@ $container-max-widths: (
 );
 
 $theme-colors: (
-        "primary": #16ba7a
+        "primary": #B34DAF
 );
 
 $enable-rounded: false;
@@ -55,9 +55,14 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 10px;
 }
 
+
+
 #headerNav .nav-tabs {
   border-bottom: none !important;
+
 }
+
+
 
 .card.cardBrowserItem {
   width: 20rem;

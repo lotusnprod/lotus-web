@@ -18,6 +18,8 @@ public class LotusUniqueNaturalProduct {
     //@Indexed(name = "lotus_id")
     public String lotus_id;
 
+    public String wikidata_id;
+
     public Integer contains_sugar;
 
     public Integer heavy_atom_number;
@@ -70,7 +72,6 @@ public class LotusUniqueNaturalProduct {
     public Double molecular_weight;
 
 
-    public Hashtable<String,Hashtable<String, ArrayList<UncomplicatedTaxonomy>>> taxonomyReferenceObjects;
 
 
 
@@ -139,18 +140,34 @@ public class LotusUniqueNaturalProduct {
     public String pubchemBitsString;
 
 
-    public String chemicalNPPathway;
-    public String chemicalNPClass;
-    public String chemicalNPsuperclass;
+
+    // CHEMICAL TAXONOMY
+
+    public String chemicalTaxonomyNPclassifierPathway;
+    public String chemicalTaxonomyNPclassifierSuperclass;
+    public String chemicalTaxonomyNPclassifierClass;
+
+
+    public String chemicalTaxonomyClassyfireKingdom;
+    public String chemicalTaxonomyClassyfireSuperclass;
+    public String chemicalTaxonomyClassyfireClass;
+    public String chemicalTaxonomyClassyfireDirectParent;
+
+
+    public HashSet<String> allChemClassifications;
+
+
+    //TAXONOMY
+
+    public Hashtable<String,Hashtable<String, ArrayList<UncomplicatedTaxonomy>>> taxonomyReferenceObjects;
+    public HashSet<String> allTaxa;
+
 
 
 
     public Double tanimoto;
 
 
-
-    // Symmetry measures
-    //TODO later
 
 
     // Molecular descriptors
@@ -271,6 +288,14 @@ public class LotusUniqueNaturalProduct {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getWikidata_id() {
+        return wikidata_id;
+    }
+
+    public void setWikidata_id(String wikidata_id) {
+        this.wikidata_id = wikidata_id;
     }
 
     public Integer getContains_sugar() {
@@ -883,28 +908,60 @@ public class LotusUniqueNaturalProduct {
     }
 
 
-    public String getChemicalNPPathway() {
-        return chemicalNPPathway;
+    public String getChemicalTaxonomyNPclassifierPathway() {
+        return chemicalTaxonomyNPclassifierPathway;
     }
 
-    public void setChemicalNPPathway(String chemicalNPPathway) {
-        this.chemicalNPPathway = chemicalNPPathway;
+    public void setChemicalTaxonomyNPclassifierPathway(String chemicalTaxonomyNPclassifierPathway) {
+        this.chemicalTaxonomyNPclassifierPathway = chemicalTaxonomyNPclassifierPathway;
     }
 
-    public String getChemicalNPClass() {
-        return chemicalNPClass;
+    public String getChemicalTaxonomyNPclassifierSuperclass() {
+        return chemicalTaxonomyNPclassifierSuperclass;
     }
 
-    public void setChemicalNPClass(String chemicalNPClass) {
-        this.chemicalNPClass = chemicalNPClass;
+    public void setChemicalTaxonomyNPclassifierSuperclass(String chemicalTaxonomyNPclassifierSuperclass) {
+        this.chemicalTaxonomyNPclassifierSuperclass = chemicalTaxonomyNPclassifierSuperclass;
     }
 
-    public String getChemicalNPsuperclass() {
-        return chemicalNPsuperclass;
+    public String getChemicalTaxonomyNPclassifierClass() {
+        return chemicalTaxonomyNPclassifierClass;
     }
 
-    public void setChemicalNPsuperclass(String chemicalNPsuperclass) {
-        this.chemicalNPsuperclass = chemicalNPsuperclass;
+    public void setChemicalTaxonomyNPclassifierClass(String chemicalTaxonomyNPclassifierClass) {
+        this.chemicalTaxonomyNPclassifierClass = chemicalTaxonomyNPclassifierClass;
+    }
+
+    public String getChemicalTaxonomyClassyfireKingdom() {
+        return chemicalTaxonomyClassyfireKingdom;
+    }
+
+    public void setChemicalTaxonomyClassyfireKingdom(String chemicalTaxonomyClassyfireKingdom) {
+        this.chemicalTaxonomyClassyfireKingdom = chemicalTaxonomyClassyfireKingdom;
+    }
+
+    public String getChemicalTaxonomyClassyfireSuperclass() {
+        return chemicalTaxonomyClassyfireSuperclass;
+    }
+
+    public void setChemicalTaxonomyClassyfireSuperclass(String chemicalTaxonomyClassyfireSuperclass) {
+        this.chemicalTaxonomyClassyfireSuperclass = chemicalTaxonomyClassyfireSuperclass;
+    }
+
+    public String getChemicalTaxonomyClassyfireClass() {
+        return chemicalTaxonomyClassyfireClass;
+    }
+
+    public void setChemicalTaxonomyClassyfireClass(String chemicalTaxonomyClassyfireClass) {
+        this.chemicalTaxonomyClassyfireClass = chemicalTaxonomyClassyfireClass;
+    }
+
+    public String getChemicalTaxonomyClassyfireDirectParent() {
+        return chemicalTaxonomyClassyfireDirectParent;
+    }
+
+    public void setChemicalTaxonomyClassyfireDirectParent(String chemicalTaxonomyClassyfireDirectParent) {
+        this.chemicalTaxonomyClassyfireDirectParent = chemicalTaxonomyClassyfireDirectParent;
     }
 
     public String getSmiles() {
@@ -961,5 +1018,21 @@ public class LotusUniqueNaturalProduct {
 
     public void setTraditional_name(String traditional_name) {
         this.traditional_name = traditional_name;
+    }
+
+    public HashSet<String> getAllChemClassifications() {
+        return allChemClassifications;
+    }
+
+    public void setAllChemClassifications(HashSet<String> allChemClassifications) {
+        this.allChemClassifications = allChemClassifications;
+    }
+
+    public HashSet<String> getAllTaxa() {
+        return allTaxa;
+    }
+
+    public void setAllTaxa(HashSet<String> allTaxa) {
+        this.allTaxa = allTaxa;
     }
 }

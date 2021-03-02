@@ -45,6 +45,21 @@ export default class Overview extends React.Component {
         }
 
 
+        let wd_link = "not available";
+        let wd_struct_id;
+
+        if(naturalProduct.wikidata_id != null){
+            wd_struct_id = naturalProduct.wikidata_id.split("/")[naturalProduct.wikidata_id.split("/").length-1] ;
+            wd_link = <a target="_blank" rel="noopener noreferrer"  href={naturalProduct.wikidata_id}>{wd_struct_id}</a>;
+        }
+
+
+
+
+
+
+
+
 
         return (
             <Card className="compoundCardItem">
@@ -61,6 +76,10 @@ export default class Overview extends React.Component {
                                 <tr>
                                     <td>Name</td>
                                     <td>{Utils.capitalize(naturalProduct.traditional_name) ? Utils.capitalize(naturalProduct.traditional_name) : "no name available"}</td>
+                                </tr>
+                                <tr>
+                                    <td>Wikidata</td>
+                                    <td>{wd_link}</td>
                                 </tr>
                                 <tr>
                                     <td>Mol. formula</td>

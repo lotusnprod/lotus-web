@@ -18,7 +18,7 @@ class DownloadController(@Qualifier("webApplicationContext") val resourceLoader:
         val resource: Resource = resourceLoader.getResource("file:./data/np.sdf")
 
         val headers = HttpHeaders()
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=LOTUS_DB.sdf")
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=LOTUS_DB_LATEST.sdf")
 
         return ResponseEntity.ok()
                 .headers(headers)

@@ -114,6 +114,13 @@ The user should use the above-presented URL link by adjusting the following opti
 
 
 
+#### Search by mass
+
+The user can also use the Api to search by molecular mass (in Da) of the compounds, precising the desired minimal, maximal or both, molecular masses and the maximum number of molecules to return.
+    
+    https://coconut.naturalproducts/net/api/search/molweight?minMass=800&maxMass=1000&maxHits=20
+
+
 
 ### Data organization of natural products
 

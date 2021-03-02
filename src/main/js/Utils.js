@@ -42,12 +42,33 @@ export default class Utils {
 
         for(let i=0; i<npList.length; i++){
             try {
+
+
+
                 const npMolecule = OpenChemLib.Molecule.fromSmiles(npList[i].smiles);
                 sdfString+= npMolecule.toMolfileV3();
                 sdfString+= "> <lotus_id> \n";
                 sdfString+= npList[i].lotus_id +"\n\n";
                 sdfString+= "> <SMILES> \n";
                 sdfString+= npList[i].smiles +"\n\n";
+
+
+                //DOIs:
+                let taxonomyReferenceObjects = npList[i].taxonomyReferenceObjects;
+                var dois = [];
+                for(var k in taxonomyReferenceObjects) dois.push(k);
+                for(let i=0; i<dois.length; i++){
+                    let doi2url = dois[i].replaceAll("$x$x$", "\."); // nice doi
+                    sdfString+= "> <DOI> \n";
+                    sdfString+= doi2url +"\n\n";
+                }
+
+                // Taxonomies (unordered) - quick and dirty
+                // TODO: better
+                sdfString+= "> <Unordered_taxonomy> \n";
+                sdfString+= npList[i].allTaxa.join(",") +"\n\n";
+
+                //end of molecule
                 sdfString+= "$$$$\n";
             } catch(e) {
                 console.log(e.name + " in OpenChemLib: " + e.message);
