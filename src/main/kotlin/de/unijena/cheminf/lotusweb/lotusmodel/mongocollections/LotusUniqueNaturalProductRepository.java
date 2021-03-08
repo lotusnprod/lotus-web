@@ -12,6 +12,9 @@ public interface LotusUniqueNaturalProductRepository  extends MongoRepository<Lo
     @Query("{$or:[ {smiles: ?0}, {smiles2D : ?0}]}")
     public List<LotusUniqueNaturalProduct> findBySmiles2DOrSmiles (String smiles);
 
+    //@Query("{ $and :[  { $or:[ {smiles: ?0}, {smiles2D : ?0}] } , {$text: { $search: ?1 } } ]  }")
+
+
     @Query("{$or:[ {inchi: ?0}, {inchi2D : ?0}]}")
     public List<LotusUniqueNaturalProduct> findByInchiOrInchi2D(String inchi);
 

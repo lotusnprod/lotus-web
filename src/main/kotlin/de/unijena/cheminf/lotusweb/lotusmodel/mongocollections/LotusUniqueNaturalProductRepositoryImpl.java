@@ -2,6 +2,10 @@ package de.unijena.cheminf.lotusweb.lotusmodel.mongocollections;
 
 import de.unijena.cheminf.lotusweb.model.AdvancedSearchModel;
 import de.unijena.cheminf.lotusweb.utils.CustomAggregationOperation;
+import org.openscience.cdk.exception.CDKException;
+import org.openscience.cdk.fingerprint.PubchemFingerprinter;
+import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -23,6 +27,73 @@ public class LotusUniqueNaturalProductRepositoryImpl implements LotusUniqueNatur
     @Autowired
     public LotusUniqueNaturalProductRepositoryImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
+    }
+
+
+    @Override
+    public List<LotusUniqueNaturalProduct> findAllPubchemBitsSetWithTaxonomy(IAtomContainer queryAC, String intaxonomy){
+        PubchemFingerprinter pubchemFingerprinter = new PubchemFingerprinter(SilentChemObjectBuilder.getInstance());
+
+        try {
+
+
+            String fMatch = "{ '$match' : { '$and' : [  { pubchemBits : { $bitsAllSet : " + pubchemFingerprinter.getBitFingerprint(queryAC).asBitSet().toString().replace("{","[").replace("}","]") + "  }} , { '$text' : { '$search' : '" + intaxonomy + "'}}]}}";
+
+            TypedAggregation agg = newAggregation(LotusUniqueNaturalProduct.class, new CustomAggregationOperation(fMatch));
+
+            System.out.println(agg);
+
+            AggregationResults results = mongoTemplate.aggregate(agg, "lotusUniqueNaturalProduct", LotusUniqueNaturalProduct.class);
+
+            List<LotusUniqueNaturalProduct> returnedNP = results.getMappedResults();
+
+            return returnedNP;
+        }catch(CDKException e){
+            List<LotusUniqueNaturalProduct> emptyList = new ArrayList<>();
+            return emptyList;
+        }
+
+    }
+
+    @Override
+    public List<LotusUniqueNaturalProduct> doExactStructureSearchByInchiAndTaxonomy (String inchi,  String intaxonomy){
+        System.out.println(inchi);
+
+        String fMatch = "{ '$match' : { '$and' : [{ '$or' : [{ 'inchi' : '"+inchi +"'}, { 'inchi2D' : '"+inchi +"'}]}, { '$text' : { '$search' : '"+intaxonomy+"'}}]}}";
+
+        TypedAggregation agg = newAggregation(
+                LotusUniqueNaturalProduct.class,
+                new CustomAggregationOperation(fMatch)
+        );
+
+        System.out.println(agg);
+
+        AggregationResults results = mongoTemplate.aggregate(agg, "lotusUniqueNaturalProduct", LotusUniqueNaturalProduct.class);
+
+        List<LotusUniqueNaturalProduct> returnedNP = results.getMappedResults();
+
+        return returnedNP;
+    }
+
+
+    @Override
+    public List<LotusUniqueNaturalProduct> findBySmiles2DOrSmilesAndTaxonomy (String smiles,  String intaxonomy){
+        System.out.println(smiles);
+
+        String fMatch = "{ '$match' : { '$and' : [{ '$or' : [{ 'smiles' : '"+smiles +"'}, { 'smiles2D' : '"+smiles +"'}]}, { '$text' : { '$search' : '"+intaxonomy+"'}}]}}";
+
+        TypedAggregation agg = newAggregation(
+                LotusUniqueNaturalProduct.class,
+                new CustomAggregationOperation(fMatch)
+        );
+
+        System.out.println(agg);
+
+        AggregationResults results = mongoTemplate.aggregate(agg, "lotusUniqueNaturalProduct", LotusUniqueNaturalProduct.class);
+
+        List<LotusUniqueNaturalProduct> returnedNP = results.getMappedResults();
+
+        return returnedNP;
     }
 
 
@@ -184,13 +255,56 @@ public class LotusUniqueNaturalProductRepositoryImpl implements LotusUniqueNatur
 
         System.out.println(agg);
 
-        AggregationResults results = mongoTemplate.aggregate(agg, "uniqueNaturalProduct", LotusUniqueNaturalProduct.class);
+        AggregationResults results = mongoTemplate.aggregate(agg, "lotusUniqueNaturalProduct", LotusUniqueNaturalProduct.class);
 
 
         List<LotusUniqueNaturalProduct> returnedNP = results.getMappedResults();
 
         return returnedNP;
     }
+
+
+
+    @Override
+    public List<LotusUniqueNaturalProduct> similaritySearchInTaxa(ArrayList<Integer> reqbits, ArrayList<Integer> qfp, Integer qmin, Integer qmax, Integer qn, Double threshold, Integer maxResults, String intaxonomy ){
+
+        String fMatch1 = "{'$match': {'$and':[ {'pfCounts.count': {'$gte': "+qmin+", '$lte': "+qmax+"}}, {'pfCounts.bits': {'$in': "+reqbits+"} }, { '$text' : { '$search' : '"+intaxonomy+"'}} ] }}";
+
+
+
+        String fProjection = "{'$project': { 'tanimoto': {'$let': {  'vars': {'common': {'$size': {'$setIntersection': ['$pfCounts.bits', "+qfp+"]}}}, 'in': {'$divide': ['$$common', {'$subtract': [{'$add': ["+qn+", '$pfCounts.count']}, '$$common']}]}  }},   'lotus_id': 1, 'smiles2D':1, 'smiles':1, 'molecular_formula':1, 'molecular_weight':1, 'npl_score':1 , 'traditional_name':1}}";
+
+
+        String fMatch2 = "{'$match': {'tanimoto': {'$gte': "+threshold+"}}}";
+
+        String fSort = "{ $sort: { 'tanimoto': -1} }";
+
+        String limit = "{$limit: "+maxResults+"}";
+
+
+        //String fQuery = "{'$match': {'pfCounts.count': {'$gte': "+qmin+", '$lte': "+qmax+"}, 'pfCounts.bits': {'$in': "+reqbits+"}}},{'$project': {'tanimoto': {'$let': {'vars': {'common': {'$size': {'$setIntersection': ['$pfCounts.bits', "+qfp+"]}}},'in': {'$divide': ['$$common', {'$subtract': [{'$add': ["+qn+", '$pfCounts.count']}, '$$common']}]} }},'coconut_id': 1, }},{'$match': {'tanimoto': {'$gte': "+threshold+"}}}" ;
+
+
+        TypedAggregation agg = newAggregation(
+                LotusUniqueNaturalProduct.class,
+                new CustomAggregationOperation(fMatch1),
+                new CustomAggregationOperation(fProjection),
+                new CustomAggregationOperation(fMatch2),
+                new CustomAggregationOperation(fSort),
+                new CustomAggregationOperation(limit)
+
+        );
+
+        System.out.println(agg);
+
+        AggregationResults results = mongoTemplate.aggregate(agg, "lotusUniqueNaturalProduct", LotusUniqueNaturalProduct.class);
+
+
+        List<LotusUniqueNaturalProduct> returnedNP = results.getMappedResults();
+
+        return returnedNP;
+    }
+
 
 
 

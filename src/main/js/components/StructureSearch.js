@@ -65,6 +65,8 @@ export default class StructureSearch extends React.Component {
 
             stringInput: "",
 
+            taxaInput:"",
+
             similarityThreshold : 90,
 
 
@@ -94,6 +96,8 @@ export default class StructureSearch extends React.Component {
 
         this.handleSimilarityThreshold = this.handleSimilarityThreshold.bind(this);
 
+        this.handleTaxaInput = this.handleTaxaInput.bind(this);
+
 
 
 
@@ -118,6 +122,10 @@ export default class StructureSearch extends React.Component {
         }
 
 
+    }
+
+    handleTaxaInput(e){
+        this.state.taxaInput = e.target.value;
     }
 
     handleSDFDownload(e, npList) {
@@ -216,20 +224,27 @@ export default class StructureSearch extends React.Component {
                     this.state.smilesCorrect = true;
                     this.state.searchSubmittedButIncorrect = false;
 
+                    let taxaSearchString = "";
+                    if(this.state.taxaInput != null && this.state.taxaInput.length>0){
+                        taxaSearchString = "&intaxonomy="+encodeURIComponent(this.state.taxaInput);
+                    }
+
+                    //TODO to add taxonomy search
+
                     if (this.state.searchType == "exact") {
                         if (this.state.exactMatchType == "inchi") {
-                            this.doSearch("/api/search/exact-structure?type=inchi&smiles=", encodeURIComponent(structureAsSmiles));
+                            this.doSearch("/api/search/exact-structure?type=inchi"+taxaSearchString+"&smiles="+ encodeURIComponent(structureAsSmiles)) ;
                         } else {
-                            this.doSearch("/api/search/exact-structure?type=smi&smiles=", encodeURIComponent(structureAsSmiles));
+                            this.doSearch("/api/search/exact-structure?type=smi"+taxaSearchString+"&smiles="+ encodeURIComponent(structureAsSmiles));
                         }
 
                     } else if (this.state.searchType == "substructure") {
                         if (this.state.substructureSearchType == "default") {
-                            this.doSearch("/api/search/substructure?type=default&max-hits=" + this.state.searchHitsLimit + "&smiles=", encodeURIComponent(structureAsSmiles));
+                            this.doSearch("/api/search/substructure?type=default&max-hits=" + this.state.searchHitsLimit +taxaSearchString+ "&smiles="+ encodeURIComponent(structureAsSmiles))+taxaSearchString;
                         } else if (this.state.substructureSearchType == "df") {
-                            this.doSearch("/api/search/substructure?type=uit&max-hits=" + this.state.searchHitsLimit + "&smiles=", encodeURIComponent(structureAsSmiles));
+                            this.doSearch("/api/search/substructure?type=uit&max-hits=" + this.state.searchHitsLimit +taxaSearchString+ "&smiles="+ encodeURIComponent(structureAsSmiles)) + taxaSearchString;
                         } else {
-                            this.doSearch("/api/search/substructure?type=vf&max-hits=" + this.state.searchHitsLimit + "&smiles=", encodeURIComponent(structureAsSmiles));
+                            this.doSearch("/api/search/substructure?type=vf&max-hits=" + this.state.searchHitsLimit +taxaSearchString+ "&smiles=" + encodeURIComponent(structureAsSmiles)) + taxaSearchString;
                         }
 
 
@@ -238,11 +253,11 @@ export default class StructureSearch extends React.Component {
                         //console.log("detected similarity");
                         //console.log(this.state.similarityThreshold);
 
-                        this.doSearch("/api/search/similarity?simThreshold=" + this.state.similarityThreshold + "&max-hits=" + this.state.searchHitsLimit + "&smiles=", encodeURIComponent(structureAsSmiles));
+                        this.doSearch("/api/search/similarity?simThreshold=" + this.state.similarityThreshold + "&max-hits=" + this.state.searchHitsLimit +taxaSearchString+ "&smiles=" + encodeURIComponent(structureAsSmiles)) + taxaSearchString;
 
 
                     } else {
-                        this.doSearch("/api/search/exact-structure?max-hits=" + this.state.searchHitsLimit + "&smiles=", encodeURIComponent(structureAsSmiles));
+                        this.doSearch("/api/search/exact-structure?max-hits=" + this.state.searchHitsLimit+taxaSearchString + "&smiles=" + encodeURIComponent(structureAsSmiles)) + taxaSearchString;
                     }
 
                 }
@@ -338,13 +353,13 @@ export default class StructureSearch extends React.Component {
 
 
 
-    doSearch(path, searchString) {
+    doSearch(path) {
         console.log("do search called!");
 
         this.setState({searchSubmittedAndSent:true});
         restClient({
             method: "GET",
-            path: path + encodeURIComponent(searchString)
+            path: path
         }).then(
             (response) => {
                 this.setState({
@@ -526,7 +541,7 @@ export default class StructureSearch extends React.Component {
 
 
                 <br/>
-
+                <Container>
                 <Tabs defaultActiveKey="exact-match" id="select-search-type" onSelect={this.handleSearchTypeSelect} >
 
 
@@ -640,21 +655,46 @@ export default class StructureSearch extends React.Component {
 
                     </Tab>
                 </Tabs>
-
+                </Container>
+                <ColoredLine color={"#E0D8FF"} />
 
                 <Container>
-                    <Row>
-                        <Form>
-                            <Form.Group controlId="search-hits-limit">
-                                <br/>
-                                <Form.Control as="select" size="lg" name="control-hits-limit" onChange={this.handleSearchHitsLimit}  >
-                                    <option value="100">100</option>
-                                    <option value="250">250</option>
-                                    <option value="1000">1000</option>
-                                    <option value="10000">10000 (can be long)</option>
-                                </Form.Control>
+                    <Row className="align-items-center">
+                        <Col md="auto" ><h6>(Optional) Structure search only in a taxonomic group:</h6></Col>
+
+                        <Col md="auto" >
+                            <Form.Group controlId="text-field-taxonomy">
+
+                                <Form.Control type="text" placeholder="" onChange={this.handleTaxaInput} />
+                                <Form.Text className="text-muted">
+                                    Taxonomic name of any rank, e.g. "Coffea", "Apis cerana", "Viridiplantae"
+                                </Form.Text>
                             </Form.Group>
-                        </Form>
+                        </Col>
+
+                    </Row>
+                </Container>
+
+                <ColoredLine color={"#E0D8FF"} />
+                <Container>
+
+                    <Row className="align-items-center">
+                        <Col md="auto" >
+                            <h6>Select maximal number of returned hits:</h6>
+                        </Col>
+                        <Col md="auto">
+                            <Form>
+                                <Form.Group controlId="search-hits-limit">
+                                    <br/>
+                                    <Form.Control as="select"  name="control-hits-limit" onChange={this.handleSearchHitsLimit}  >
+                                        <option value="100">100</option>
+                                        <option value="250">250</option>
+                                        <option value="1000">1000</option>
+                                        <option value="10000">10000 (can be long)</option>
+                                    </Form.Control>
+                                </Form.Group>
+                            </Form>
+                        </Col>
                     </Row>
 
                     {searchSubmittedButIncorrect}

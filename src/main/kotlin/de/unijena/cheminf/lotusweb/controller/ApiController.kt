@@ -87,15 +87,29 @@ class ApiController(val lotusUniqueNaturalProductRepository: LotusUniqueNaturalP
      *  Exact structure handling
      */
     @RequestMapping("/search/exact-structure")
-    fun structureSearchBySmiles(@RequestParam("smiles") smiles: String, @RequestParam("type") type: String): Map<String, Any> {
+    fun structureSearchBySmiles(@RequestParam("smiles") smiles: String, @RequestParam("type") type: String, @RequestParam("intaxonomy" , required=false) intaxonomy: String?): Map<String, Any> {
 
+        println("received exact structure search")
+
+        val intaxonomyparam :String? = intaxonomy
 
         try {
+            if(intaxonomyparam.isNullOrBlank()) {
+                println("intaxonomy detected null")
+                if (type == "smi") {
+                    return this.doExactStructureSearchBySmiles(URLDecoder.decode(smiles.trim(), "UTF-8"))
+                } else {
+                    return this.doExactStructureSearchByInchi(URLDecoder.decode(smiles.trim(), "UTF-8"))
+                }
+            }else{
 
-            if (type == "smi") {
-                return this.doExactStructureSearchBySmiles(URLDecoder.decode(smiles.trim(), "UTF-8"))
-            } else {
-                return this.doExactStructureSearchByInchi(URLDecoder.decode(smiles.trim(), "UTF-8"))
+                println("detected taxonomy")
+                if (type == "smi") {
+                    return this.doExactStructureSearchBySmilesAndTaxonomy(URLDecoder.decode(smiles.trim(), "UTF-8"), intaxonomyparam)
+                } else {
+                    return this.doExactStructureSearchByInchiAndTaxonomy(URLDecoder.decode(smiles.trim(), "UTF-8"), intaxonomyparam)
+                }
+
             }
         }catch (ex: Exception){
 
@@ -111,6 +125,9 @@ class ApiController(val lotusUniqueNaturalProductRepository: LotusUniqueNaturalP
                 else -> throw ex
             }
         }
+
+
+
     }
 
 
@@ -118,10 +135,20 @@ class ApiController(val lotusUniqueNaturalProductRepository: LotusUniqueNaturalP
      *  Substructure handling
      */
     @RequestMapping("/search/substructure")
-    fun substructureSearch(@RequestParam("smiles") smiles: String , @RequestParam("type") type: String , @RequestParam("max-hits") maxHits:String): Map<String, Any> {
+    fun substructureSearch(@RequestParam("smiles") smiles: String , @RequestParam("type") type: String , @RequestParam("max-hits") maxHits:String , @RequestParam("intaxonomy" , required=false) intaxonomy: String?): Map<String, Any> {
+
+        println("received substrucutre structure search")
+
+        val intaxonomyparam :String? = intaxonomy
+
+
 
         try {
-            return this.doSubstructureSearch(URLDecoder.decode(smiles.trim(), "UTF-8"), type, maxHits.toIntOrNull())
+            if(intaxonomyparam.isNullOrBlank()) {
+                return this.doSubstructureSearch(URLDecoder.decode(smiles.trim(), "UTF-8"), type, maxHits.toIntOrNull())
+            }else{
+                return this.doSubstructureSearchInTaxa(URLDecoder.decode(smiles.trim(), "UTF-8"), type, maxHits.toIntOrNull(), intaxonomyparam)
+            }
         }catch (ex: Exception ){
 
             when(ex) {
@@ -137,6 +164,45 @@ class ApiController(val lotusUniqueNaturalProductRepository: LotusUniqueNaturalP
             }
         }
     }
+
+
+
+
+    /**
+     *  Similarity handling
+     */
+    @RequestMapping("/search/similarity")
+    fun similaritySearch(@RequestParam("smiles") smiles: String , @RequestParam("max-hits") maxHits:String, @RequestParam("simThreshold") simThreshold:String, @RequestParam("intaxonomy" , required=false) intaxonomy: String?): Map<String, Any> {
+
+        val intaxonomyparam :String? = intaxonomy
+
+
+        var th: Int? = simThreshold.toIntOrNull()
+        th = th
+
+        try {
+            if(intaxonomyparam.isNullOrBlank()) {
+                return this.doSimilaritySearch(URLDecoder.decode(smiles.trim(), "UTF-8"), maxHits.toIntOrNull(), th)
+            }else{
+                return this.doSimilaritySearchInTaxa(URLDecoder.decode(smiles.trim(), "UTF-8"), maxHits.toIntOrNull(), th, intaxonomyparam)
+            }
+        }catch (ex: Exception){
+
+            when(ex) {
+                is MongoCommandException, is OutOfMemoryError -> {
+                    val other: List<LotusUniqueNaturalProduct> = emptyList()
+                    return mapOf(
+                            "originalQuery" to smiles,
+                            "count" to 0,
+                            "naturalProducts" to  other
+                    )
+                }
+                else -> throw ex
+            }
+
+        }
+    }
+
 
 
     /**
@@ -172,33 +238,6 @@ class ApiController(val lotusUniqueNaturalProductRepository: LotusUniqueNaturalP
     }
 
 
-    /**
-     *  Similarity handling
-     */
-    @RequestMapping("/search/similarity")
-    fun similaritySearch(@RequestParam("smiles") smiles: String , @RequestParam("max-hits") maxHits:String, @RequestParam("simThreshold") simThreshold:String): Map<String, Any> {
-
-        var th: Int? = simThreshold.toIntOrNull()
-        th = th
-
-        try {
-            return this.doSimilaritySearch(URLDecoder.decode(smiles.trim(), "UTF-8"), maxHits.toIntOrNull(), th)
-        }catch (ex: Exception){
-
-            when(ex) {
-                is MongoCommandException, is OutOfMemoryError -> {
-                    val other: List<LotusUniqueNaturalProduct> = emptyList()
-                    return mapOf(
-                            "originalQuery" to smiles,
-                            "count" to 0,
-                            "naturalProducts" to  other
-                    )
-                }
-                else -> throw ex
-            }
-
-        }
-    }
 
     /**
      * Search by mass
@@ -399,15 +438,61 @@ class ApiController(val lotusUniqueNaturalProductRepository: LotusUniqueNaturalP
     }
 
 
+    fun doExactStructureSearchByInchiAndTaxonomy(smiles: String, intaxonomy:String): Map<String, Any> {
+
+        try {
+            val queryAC: IAtomContainer = this.smilesParser.parseSmiles(smiles)
+            val gen = InChIGeneratorFactory.getInstance().getInChIGenerator(queryAC, options)
+
+            var queryInchi =  gen.getInchi()
+
+
+            val results = this.lotusUniqueNaturalProductRepository.doExactStructureSearchByInchiAndTaxonomy(queryInchi, intaxonomy)
+
+            return mapOf(
+                    "originalQuery" to smiles,
+                    "count" to results.size,
+                    "naturalProducts" to results
+            )
+        } catch (e: InvalidSmilesException) {
+            error("An InvalidSmilesException occured: ${e.message}")
+        } catch (e: CDKException) {
+            error("A CDKException occured: ${e.message}")
+        }
+    }
+
+
     fun doExactStructureSearchBySmiles(smiles: String) : Map<String, Any>{
 
 
         try {
-            val queryAC: IAtomContainer = this.smilesParser.parseSmiles(smiles)
-            val querySmiles = smilesGenerator.create(queryAC)
+            //val queryAC: IAtomContainer = this.smilesParser.parseSmiles(smiles)
+            //val querySmiles = smilesGenerator.create(queryAC)
 
 
-            val results = this.lotusUniqueNaturalProductRepository.findBySmiles2DOrSmiles(querySmiles)
+            val results = this.lotusUniqueNaturalProductRepository.findBySmiles2DOrSmiles(smiles)
+
+            return mapOf(
+                    "originalQuery" to smiles,
+                    "count" to results.size,
+                    "naturalProducts" to results
+            )
+        } catch (e: InvalidSmilesException) {
+            error("An InvalidSmilesException occured: ${e.message}")
+        } catch (e: CDKException) {
+            error("A CDKException occured: ${e.message}")
+        }
+
+    }
+
+
+    fun doExactStructureSearchBySmilesAndTaxonomy(smiles: String, intaxonomy:String) : Map<String, Any>{
+
+        println("Searching by SMILES and taxonomy")
+
+        try {
+
+            val results = this.lotusUniqueNaturalProductRepository.findBySmiles2DOrSmilesAndTaxonomy(smiles,  intaxonomy)
 
             return mapOf(
                     "originalQuery" to smiles,
@@ -581,7 +666,116 @@ class ApiController(val lotusUniqueNaturalProductRepository: LotusUniqueNaturalP
 
 
 
+    fun doSubstructureSearchInTaxa(smiles: String, type: String, maxHitsSubmitted: Int?, intaxonomy: String): Map<String, Any> {
+        println("Entering substructure search with taxonomy")
 
+        println(smiles)
+
+        var maxResults = 100
+
+        if(maxHitsSubmitted != null ){
+            maxResults = maxHitsSubmitted
+        }
+
+        val hits = mutableListOf<LotusUniqueNaturalProduct>()
+        var counter: Int = 0
+
+
+        try {
+            val queryAC: IAtomContainer = this.smilesParser.parseSmiles(smiles)
+
+            //println(pubchemFingerprinter.getBitFingerprint(queryAC).asBitSet().toByteArray())
+
+            // run $allBitsSet in mongo
+
+
+            val matchedList = this.lotusUniqueNaturalProductRepository.findAllPubchemBitsSetWithTaxonomy(queryAC, intaxonomy)
+
+
+            println("found "+matchedList.size+" molecules with bits set")
+            val pattern: Pattern
+            // return a list of UNP:
+            if(type=="default") {
+                // for each UNP - convert to IAC and run the Ullmann
+                pattern = Ullmann.findSubstructure(queryAC)
+                for(unp in matchedList){//loop@
+
+                    var targetAC : IAtomContainer = this.atomContainerToUniqueNaturalProductService.createAtomContainer(unp)
+
+                    val match = pattern.match(targetAC)
+
+                    if (match.isNotEmpty()) {
+                        hits.add(unp)
+
+                        //println(unp.coconut_id)
+
+                        counter++
+
+                        //if (counter==maxResults) break@loop
+
+                    }
+                }
+
+            }else if(type=="df"){
+                pattern = DfPattern.findSubstructure(queryAC)
+
+                for(unp in matchedList){//loop@
+
+                    var targetAC : IAtomContainer = this.atomContainerToUniqueNaturalProductService.createAtomContainer(unp)
+                    if (pattern.matches(targetAC)) {
+                        hits.add(unp)
+                        //println(unp.coconut_id)
+                        counter++
+                        //if (counter==maxResults) break@loop
+
+                    }
+                }
+
+
+            }else{
+                //Vento-Foggia
+                pattern = VentoFoggia.findSubstructure(queryAC)
+                for(unp in matchedList){ //loop@
+
+                    var targetAC : IAtomContainer = this.atomContainerToUniqueNaturalProductService.createAtomContainer(unp)
+
+                    val match = pattern.match(targetAC)
+
+                    if (match.isNotEmpty()) {
+                        hits.add(unp)
+
+                        println(unp.lotus_id)
+
+                        //counter++
+
+                        //if (counter==maxResults) break@loop
+
+                    }
+                }
+
+            }
+
+            println(hits.size)
+            hits.sortBy { it.total_atom_number }
+
+            //list.sortedWith(compareBy({ it.customProperty }))
+            val hitsToReturn = hits.subList(0, minOf(hits.size , maxResults))
+
+            println("ready to return results!")
+
+            return mapOf(
+                    "originalQuery" to smiles,
+                    "count" to  hitsToReturn.size,
+                    "naturalProducts" to hitsToReturn
+            )
+
+        } catch (e: InvalidSmilesException) {
+            error("An InvalidSmilesException occured: ${e.message}")
+        } catch (e: CDKException) {
+            error("A CDKException occured: ${e.message}")
+        }
+
+    }
 
     fun doSubstructureSearch(smiles: String, type: String, maxHitsSubmitted: Int?): Map<String, Any> {
         println("Entering substructure search")
@@ -600,7 +794,7 @@ class ApiController(val lotusUniqueNaturalProductRepository: LotusUniqueNaturalP
         try {
             val queryAC: IAtomContainer = this.smilesParser.parseSmiles(smiles)
 
-            println(pubchemFingerprinter.getBitFingerprint(queryAC).asBitSet().toByteArray())
+            //println(pubchemFingerprinter.getBitFingerprint(queryAC).asBitSet().toByteArray())
 
             // run $allBitsSet in mongo
             val barray = pubchemFingerprinter.getBitFingerprint(queryAC).asBitSet().toByteArray()
@@ -693,7 +887,84 @@ class ApiController(val lotusUniqueNaturalProductRepository: LotusUniqueNaturalP
     }
 
 
+    fun doSimilaritySearchInTaxa(smiles: String, maxHitsSubmitted: Int?, th: Int?, intaxonomy: String): Map<String, Any> {
 
+
+
+        var threshold: Double = 0.9
+
+        if(th != null){
+            threshold = th.toDouble()/100
+        }
+
+        println("entered similarity search")
+
+        println(smiles)
+
+        var maxResults = 100
+
+        if(maxHitsSubmitted != null ){
+            maxResults = maxHitsSubmitted
+        }
+
+
+        try {
+            val queryAC: IAtomContainer = this.smilesParser.parseSmiles(smiles)
+
+            val s = pubchemFingerprinter.getBitFingerprint(queryAC).asBitSet()
+            val queryPF = ArrayList<Int>()
+            var i = s.nextSetBit(0)
+            while (i != -1) {
+                queryPF.add(i)
+                i = s.nextSetBit(i + 1)
+            }
+            //queryPF is an array of indexes of ON bits for the query molecule
+
+            var qLen : Int = queryPF.size
+
+            var qmin = (Math.ceil(qLen * threshold)).toInt()        // Minimum number of bits in results fingerprints
+            var qmax = (qLen / threshold).toInt()              // Maximum number of bits in results fingerprints
+            var ncommon = qLen - qmin + 1                      // Number of fingerprint bits in which at least 1 must be in common
+
+
+            var allBits: MutableList<PubFingerprintsCounts> = pubFingerprintsCountsRepository.findAll()
+            allBits.sortByDescending { it.count } //sorting to have the most frequent bits first
+
+            var requestedBits = ArrayList<Int>()
+
+            getbits@for (bit:PubFingerprintsCounts in allBits ){
+                if(bit.id in queryPF){
+                    requestedBits.add(bit.id)
+                }
+                if(requestedBits.size==ncommon)break@getbits
+
+            }
+
+
+            val matchedList = this.lotusUniqueNaturalProductRepository.similaritySearchInTaxa(requestedBits, queryPF, qmin, qmax, qLen, threshold, maxResults, intaxonomy)
+
+            //TODO redo a tanomoto here to be sure that the match is correct
+            //println(matchedList[0].tanimoto)
+
+            //hits.sortBy { it.heavy_atom_number }
+            //val hitsToReturn = matchedList.subList(0, minOf(matchedList.size , maxResults))
+
+
+            return mapOf(
+                    "originalQuery" to smiles,
+                    "count" to matchedList.size,
+                    "naturalProducts" to matchedList
+            )
+
+        } catch (e: InvalidSmilesException) {
+            error("An InvalidSmilesException occured: ${e.message}")
+        } catch (e: CDKException) {
+            error("A CDKException occured: ${e.message}")
+        }
+
+
+
+    }
 
 
 
@@ -753,7 +1024,7 @@ class ApiController(val lotusUniqueNaturalProductRepository: LotusUniqueNaturalP
             val matchedList = this.lotusUniqueNaturalProductRepository.similaritySearch(requestedBits, queryPF, qmin, qmax, qLen, threshold, maxResults)
 
             //TODO redo a tanomoto here to be sure that the match is correct
-            println(matchedList[0].tanimoto)
+            //println(matchedList[0].tanimoto)
 
             //hits.sortBy { it.heavy_atom_number }
             //val hitsToReturn = matchedList.subList(0, minOf(matchedList.size , maxResults))

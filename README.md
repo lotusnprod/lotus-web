@@ -40,7 +40,7 @@ db.runCommand(
     indexes: [
         {
             key: {
-                iupac_name:"text", traditional_name:"text", allTaxa:"text"
+                iupac_name:"text", traditional_name:"text", allTaxa:"text", allChemClassifications:"text", allWikidataIds:"text"
             },
             name: "superTextIndex",
 	    weights: { name:10, synonyms:5  }
@@ -63,3 +63,6 @@ db.lotusUniqueNaturalProduct.createIndex( { "pfCounts.bits" :1} )
 db.lotusUniqueNaturalProduct.createIndex( { "pfCounts.count" : 1 })
 
 ```
+
+
+docker-compose up -d --no-deps --build lotus-online

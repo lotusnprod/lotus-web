@@ -1545,7 +1545,11 @@ export default class AdvancedSearch extends React.Component {
 
 
                 <Container>
-                    <Row>
+                    <Row className="align-items-center">
+                        <Col md="auto" >
+                            Select maximal number of returned hits:
+                        </Col>
+                        <Col md="auto">
                         <Form>
                             <Form.Group controlId="search-hits-limit">
                                 <br/>
@@ -1557,6 +1561,7 @@ export default class AdvancedSearch extends React.Component {
                                 </Form.Control>
                             </Form.Group>
                         </Form>
+                        </Col>
                     </Row>
 
                     {/*{searchSubmittedButIncorrect}*/}
