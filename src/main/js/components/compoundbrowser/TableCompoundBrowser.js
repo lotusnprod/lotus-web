@@ -16,7 +16,8 @@ export default class TableCompoundBrowser extends React.Component {
                 <thead>
                 <tr>
                     <th className="tableThumbnail"></th>
-                    <th>LOTUS id</th>
+                    <th>Wikidata id</th>
+                    <th>Tmp. LOTUS id</th>
                     <th>Name</th>
                     <th>Mol. formula</th>
                     <th>Mol. weight</th>

@@ -64,7 +64,7 @@ export default class Overview extends React.Component {
         return (
             <Card className="compoundCardItem">
                 <Card.Body>
-                    <Card.Title className="text-primary">{naturalProduct.lotus_id}</Card.Title>
+                    <Card.Title className="text-primary">{wd_struct_id || naturalProduct.lotus_id}</Card.Title>
                     <br />
                     <Row>
                         <Col sm={4}>

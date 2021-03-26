@@ -18,6 +18,12 @@ export default class NaturalProductTableItem extends React.Component {
         let tax2displayList = [];
         let tax2display = [];
 
+        let card_main_id = this.props.naturalProduct.lotus_id;
+
+        if(naturalProduct.wikidata_id != null){
+            card_main_id = naturalProduct.wikidata_id.split("/")[naturalProduct.wikidata_id.split("/").length-1] ;
+        }
+
 
         var dois = [];
         for(var k in taxonomyReferenceObjects) dois.push(k);
@@ -49,6 +55,7 @@ export default class NaturalProductTableItem extends React.Component {
             <LinkContainer to={linkToCompoundPage}>
                 <tr>
                     <td><Image src={structure.toDataURL()} alt="🥥" fluid/></td>
+                    <td>{card_main_id}</td>
                     <td>{this.props.naturalProduct.lotus_id}</td>
                     <td>{Utils.capitalize(this.props.naturalProduct.traditional_name) ||  this.props.naturalProduct.iupac_name}</td>
                     <td>{this.props.naturalProduct.molecular_formula || this.props.naturalProduct.molecularFormula}</td>

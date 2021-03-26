@@ -30,7 +30,7 @@ export default class Representations extends React.Component {
                     <Table responsive bordered hover size="sm" >
                         <tbody>
                         <tr key={"represent_id"}>
-                            <td>LOTUS id</td>
+                            <td>Temporary LOTUS id</td>
                             <td>{naturalProduct.lotus_id}</td>
                         </tr>
                         <tr key={"represent_name"}>

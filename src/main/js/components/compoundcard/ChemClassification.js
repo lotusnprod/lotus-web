@@ -2,6 +2,7 @@ import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link, Redirect} from "react-router-dom";
+import Row from "react-bootstrap/Row";
 
 import Button from "react-bootstrap/Button";
 import Tab from "react-bootstrap/Tab";
@@ -58,27 +59,28 @@ export default class ChemClassification extends React.Component {
 
 
             npcTable.push(
-                <Table id={"npc"+naturalProduct.lotus_id} size="sm" striped bordered hover >
-                    <thead >
-                    <tr>
-                        <td>Pathway</td>
-                        <td>Superclass</td>
-                        <td>Class</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td id={"npc1"}>{naturalProduct.chemicalTaxonomyNPclassifierPathway}</td>
-                        <td id={"npc2"}>{naturalProduct.chemicalTaxonomyNPclassifierSuperclass}</td>
-                        <td id={"npc3"}>{naturalProduct.chemicalTaxonomyNPclassifierClass}</td>
-                    </tr>
-                    </tbody>
-                </Table>
+                <Row id={"npcrow"+naturalProduct.lotus_id} className="justify-content-xl-left ml-1 mr-3">
+                    <Table id={"npc"+naturalProduct.lotus_id} size="sm" striped bordered hover>
+                        <thead >
+                        <tr>
+                            <td style={{"whiteSpace":"nowrap",  "border":"thin solid #dee2e6"}}>Pathway</td>
+                            <td style={{"whiteSpace":"nowrap",  "border":"thin solid #dee2e6"}}>Superclass</td>
+                            <td style={{"whiteSpace":"nowrap",  "border":"thin solid #dee2e6"}}>Class</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td style={{"whiteSpace":"nowrap",  "border":"thin solid #dee2e6"}} id={"npc1"}>{naturalProduct.chemicalTaxonomyNPclassifierPathway || "-"}</td>
+                            <td style={{"whiteSpace":"nowrap",  "border":"thin solid #dee2e6"}} id={"npc2"}>{naturalProduct.chemicalTaxonomyNPclassifierSuperclass || "-"}</td>
+                            <td style={{"whiteSpace":"nowrap",  "border":"thin solid #dee2e6"}} id={"npc3"}>{naturalProduct.chemicalTaxonomyNPclassifierClass || "-"}</td>
+                        </tr>
+                        </tbody>
+                    </Table>
+                </Row>
             );
 
             all_tabs.push(
                 <Tab eventKey="npclassifier"  id={"chem_tab_npc"+naturalProduct.lotus_id} title="NP Classifier" >
-                    <br/>
                     <br/>
                     {npcTable}
                 </Tab>
@@ -91,27 +93,28 @@ export default class ChemClassification extends React.Component {
         if(naturalProduct.chemicalTaxonomyClassyfireKingdom != null || naturalProduct.chemicalTaxonomyClassyfireSuperclass != null || naturalProduct.chemicalTaxonomyClassyfireClass != null || naturalProduct.chemicalTaxonomyClassyfireDirectParent != null){
             let classyfire_tab = [];
 
-            //todo fill the table
 
             classyfire_tab.push(
-                <Table id={"classyf"+naturalProduct.lotus_id} size="sm" striped bordered hover >
-                    <thead >
-                    <tr>
-                        <td>Kingdom</td>
-                        <td>Superclass</td>
-                        <td>Class</td>
-                        <td>Direct Parent</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td id={"cf1"}>{naturalProduct.chemicalTaxonomyClassyfireKingdom}</td>
-                        <td id={"cf2"}>{naturalProduct.chemicalTaxonomyClassyfireSuperclass}</td>
-                        <td id={"cf3"}>{naturalProduct.chemicalTaxonomyClassyfireClass}</td>
-                        <td id={"cf4"}>{naturalProduct.chemicalTaxonomyClassyfireDirectParent}</td>
-                    </tr>
-                    </tbody>
-                </Table>
+                <Row id={"classyfrow"+naturalProduct.lotus_id} className="justify-content-xl-left  ml-1 mr-3">
+                    <Table  id={"classyf"+naturalProduct.lotus_id} size="sm" striped bordered hover>
+                        <thead >
+                        <tr>
+                            <td style={{"whiteSpace":"nowrap",  "border":"thin solid #dee2e6"}}>Kingdom</td>
+                            <td style={{"whiteSpace":"nowrap",  "border":"thin solid #dee2e6"}}>Superclass</td>
+                            <td style={{"whiteSpace":"nowrap",  "border":"thin solid #dee2e6"}}>Class</td>
+                            <td style={{"whiteSpace":"nowrap",  "border":"thin solid #dee2e6"}}>Direct Parent</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td style={{"whiteSpace":"nowrap",  "border":"thin solid #dee2e6"}} id={"cf1"}>{naturalProduct.chemicalTaxonomyClassyfireKingdom || "-"}</td>
+                            <td style={{"whiteSpace":"nowrap",  "border":"thin solid #dee2e6"}} id={"cf2"}>{naturalProduct.chemicalTaxonomyClassyfireSuperclass || "-"}</td>
+                            <td style={{"whiteSpace":"nowrap",  "border":"thin solid #dee2e6"}} id={"cf3"}>{naturalProduct.chemicalTaxonomyClassyfireClass || "-"}</td>
+                            <td style={{"whiteSpace":"nowrap",  "border":"thin solid #dee2e6"}} id={"cf4"}>{naturalProduct.chemicalTaxonomyClassyfireDirectParent || "-"}</td>
+                        </tr>
+                        </tbody>
+                    </Table>
+                </Row>
 
             );
 
@@ -131,11 +134,11 @@ export default class ChemClassification extends React.Component {
 
         full_table.push(
 
-                <Tabs  defaultActiveKey="npclassifier" variant="pills" className='ml-1 mr-1' >
-                    {/*id = "chem_class_tabs"*/}
+            <Tabs  defaultActiveKey="npclassifier" variant="pills" className='ml-1 mr-1' >
+                {/*id = "chem_class_tabs"*/}
 
-                    {all_tabs}
-                </Tabs>
+                {all_tabs}
+            </Tabs>
         );
 
 
@@ -143,20 +146,20 @@ export default class ChemClassification extends React.Component {
 
 
 
-            return (
-                <Card className="compoundCardItem">
-                    <Card.Body>
-                        <Card.Title className="text-primary">Chemical ontology</Card.Title>
-                        <br />
-                            {full_table}
+        return (
+            <Card className="compoundCardItem">
+                <Card.Body>
+                    <Card.Title className="text-primary">Chemical ontology</Card.Title>
+                    <br />
+                    {full_table}
 
-                    </Card.Body>
-                    {/*this.state.searchSubmitted && <Redirect to={"/search/chemclass/" + encodeURIComponent(this.state.queryString)}/> */}
-                </Card>
+                </Card.Body>
+                {/*this.state.searchSubmitted && <Redirect to={"/search/chemclass/" + encodeURIComponent(this.state.queryString)}/> */}
+            </Card>
 
 
-            );
-        }
+        );
+    }
 
 
 }

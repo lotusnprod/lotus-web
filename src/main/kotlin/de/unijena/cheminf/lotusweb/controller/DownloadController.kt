@@ -15,10 +15,11 @@ class DownloadController(@Qualifier("webApplicationContext") val resourceLoader:
 
     @GetMapping("/download/sdf")
     fun downloadSDFFile(): ResponseEntity<Resource> {
-        val resource: Resource = resourceLoader.getResource("file:./data/np.sdf")
+        //val resource: Resource = resourceLoader.getResource("file:./data/np.sdf")
+        val resource: Resource = resourceLoader.getResource("file:./data/lotus_sdf.zip")
 
         val headers = HttpHeaders()
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=LOTUS_DB_LATEST.sdf")
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=LOTUS_DB_LATEST.zip")
 
         return ResponseEntity.ok()
                 .headers(headers)

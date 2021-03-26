@@ -11,6 +11,11 @@ import Tab from "react-bootstrap/Tab";
 
 const React = require("react");
 
+import WikidataLogo from "../../../resources/images/wikidatalogo.png";
+import CoconutIcon from "../../../resources/images/coconut_logo.png";
+import Image from "react-bootstrap/Image";
+
+
 
 export default class TaxonomyReferenceMap extends React.Component{
 
@@ -38,6 +43,7 @@ export default class TaxonomyReferenceMap extends React.Component{
             var db_names = [];
             for(var k in allTaxonomiesObject) db_names.push(k);
 
+            var tabs_key = null;
 
             for( let j = 0;j<db_names.length;j++){
 
@@ -112,13 +118,21 @@ export default class TaxonomyReferenceMap extends React.Component{
                 }
 
                 taxo_header.push(
-                    <th>
+                    <th style={{width:"100px"}}>
                         Link to taxonomy
                     </th>
                 );
 
 
 
+
+                if("Open Tree of Life" == db_names[j]  ){
+                    taxo_header.push(
+                        <th style={{width:"100px"}}>
+                            Link to Wikidata
+                        </th>
+                    );
+                }
 
 
                 /** the rest**/
@@ -138,17 +152,36 @@ export default class TaxonomyReferenceMap extends React.Component{
 
                     if(db_names[j] == "Open Tree of Life"){
                         organismURL = "https://tree.opentreeoflife.org/opentree/argus/ottol@"+tax_object.cleaned_organism_id ;
+
+                        tabs_key ="Open_Tree_of_Life";
+
+
+
+
+
                     }else if(db_names[j] == "NCBI"){
                         organismURL = "https://www.ncbi.nlm.nih.gov/Taxonomy/CompoundBrowser/wwwtax.cgi?id="+tax_object.cleaned_organism_id ;
+                        if(tabs_key == null){
+                            tabs_key = "NCBI";
+                        }
                     }else if(db_names[j] == "GBIF Backbone Taxonomy"){
                         organismURL = "https://www.gbif.org/species/"+tax_object.cleaned_organism_id ;
+                        if(tabs_key == null){
+                            tabs_key = "GBIF_Backbone_Taxonomy";
+                        }
                     }else if(db_names[j] == "iNaturalist"){
                         organismURL = "https://www.inaturalist.org/taxa/"+tax_object.cleaned_organism_id ;
+                        if(tabs_key == null){
+                            tabs_key = "iNaturalist";
+                        }
                     }/*else if(db_names[j] == "ITIS"){
                         organismURL = ""+tax_object.cleaned_organism_id ;
                     }*/
                     else if(db_names[j] == "Index Fungorum"){
                         organismURL = "http://www.indexfungorum.org/names/NamesRecord.asp?RecordID="+tax_object.cleaned_organism_id ;
+                        if(tabs_key == null){
+                            tabs_key = "Index_Fungorum";
+                        }
                     }/*else if(db_names[j] == "VASCAN"){
                         organismURL = ""+tax_object.cleaned_organism_id ;
                     }*/
@@ -157,65 +190,77 @@ export default class TaxonomyReferenceMap extends React.Component{
 
                     if(ranks.includes("domain") && tax_object.domain != null ){
                         taxo_line.push(
-                            <td style={{"whiteSpace":"nowrap"}}>{tax_object.domain}</td>
+                            <td style={{"whiteSpace":"nowrap","border":"thin solid #dee2e6"}}>&nbsp;{tax_object.domain}&nbsp;</td>
                         )
                     }
 
                     if(ranks.includes("superkingdom") && tax_object.superkingdom != null){
                         taxo_line.push(
-                            <td style={{"whiteSpace":"nowrap"}}>{tax_object.superkingdom}</td>
+                            <td style={{"whiteSpace":"nowrap","border":"thin solid #dee2e6"}}>&nbsp;{tax_object.superkingdom}&nbsp;</td>
                         )
                     }
 
                     if(ranks.includes("kingdom") && tax_object.kingdom != null){
                         taxo_line.push(
-                            <td style={{"whiteSpace":"nowrap"}}>{tax_object.kingdom}</td>
+                            <td style={{"whiteSpace":"nowrap","border":"thin solid #dee2e6"}}>&nbsp;{tax_object.kingdom}&nbsp;</td>
                         )
                     }
 
                     if(ranks.includes("phylum") && tax_object.phylum != null){
                         taxo_line.push(
-                            <td>{tax_object.phylum}</td>
+                            <td style={{"border":"thin solid #dee2e6"}}>&nbsp;{tax_object.phylum}&nbsp;</td>
                         )
                     }
 
                     if(ranks.includes("class") && tax_object.class != null ){
                         taxo_line.push(
-                            <td>{tax_object.class}</td>
+                            <td style={{"border":"thin solid #dee2e6"}}>&nbsp;{tax_object.class}&nbsp;</td>
                         )
                     }
 
                     if(ranks.includes("order") && tax_object.order != null){
                         taxo_line.push(
-                            <td>{tax_object.order}</td>
+                            <td style={{"border":"thin solid #dee2e6"}}>&nbsp;{tax_object.order}&nbsp;</td>
                         )
                     }
 
                     if(ranks.includes("family") && tax_object.family != null){
                         taxo_line.push(
-                            <td>{tax_object.family}</td>
+                            <td style={{"border":"thin solid #dee2e6"}}>&nbsp;{tax_object.family}&nbsp;</td>
                         )
                     }
 
                     if(ranks.includes("genus") && tax_object.genus != null){
                         taxo_line.push(
-                            <td>{tax_object.genus}</td>
+                            <td style={{"border":"thin solid #dee2e6"}}>&nbsp;{tax_object.genus}&nbsp;</td>
                         )
                     }
 
                     if(ranks.includes("species") && tax_object.species != null){
                         taxo_line.push(
-                            <td style={{"whiteSpace":"nowrap"}}>{tax_object.species}</td>
+                            <td style={{"whiteSpace":"nowrap", "border":"thin solid #dee2e6"}}>&nbsp;{tax_object.species}&nbsp;</td>
                         )
                     }
 
                     taxo_line.push(
-                        <td className='mt-4 align-items-center' >
-                            <Button id={"linkTo_" + tax_object.cleaned_organism_id} variant="outline-primary" size="sm" href={organismURL} target="_blank">
+                        <td style={{"whiteSpace":"nowrap", "minWidth":"130px", "alignItems": "center",  "justifyContent": "center", "border":"thin solid #dee2e6", "margin":"3px", "textAlign": 'center'}} >
+                            <Button id={"linkTo_" + tax_object.cleaned_organism_id} variant="outline-primary" size="md" href={organismURL} target="_blank">
                                 <FontAwesomeIcon icon="sitemap" fixedWidth/>
                             </Button>
                         </td>
                     );
+
+                    if( tax_object.wikidata_id != null ){
+                        taxo_line.push(
+                            <td style={{"whiteSpace":"nowrap", "minWidth":"130px", "justifyContent": "center", "border":"thin solid #dee2e6", "margin":"3px",  "textAlign": 'center'}}>
+
+                                <Button id={"linkTo_wikidata_" + tax_object.cleaned_organism_id} variant="outline-success" size="sm" href={tax_object.wikidata_id} target="_blank">
+
+                                    <Image id={"wikidatalogo"+tax_object.wikidata_id} alt="Wikidata logo"  src={WikidataLogo}/>
+                                </Button>
+                            </td>
+                        )
+                    }
 
 
                     taxo_lines.push(
@@ -229,18 +274,19 @@ export default class TaxonomyReferenceMap extends React.Component{
                 }
 
                 taxo_table.push(
-
-                    <Table id={{i}} size="sm" className=' align-items-left' striped bordered hover >
+                    <Row id={i+"row_tax"}  className="justify-content-xl-left ">
+                    <Table id={i+"tax"} size="sm" striped bordered hover responsive="xl">
                         {/*mt-xl-4*/}
                         <thead >
-                            <tr>
-                                {taxo_header}
-                            </tr>
+                        <tr>
+                            {taxo_header}
+                        </tr>
                         </thead>
                         <tbody>
-                            {taxo_lines}
+                        {taxo_lines}
                         </tbody>
                     </Table>
+                    </Row>
                 );
 
 
@@ -255,21 +301,40 @@ export default class TaxonomyReferenceMap extends React.Component{
 
             }
 
+            let ref_buttons = [];
+            ref_buttons.push(
+                <Col>
+                    <Button className="btn btn-default" id={"linkTo_" + doi2url} variant="outline-primary" size="sm" href={"https://doi.org/"+doi2url} target="_blank">
+                        Ref: <FontAwesomeIcon icon="external-link-alt" fixedWidth/>
+                    </Button>
+                </Col>
+            );
+            if("Open Tree of Life" in taxonomyReferenceObjects[dois[i]]){
+                ref_buttons.push(
+                    <Col>
+                        <Button className="btn btn-default" id={"linkTo_wikidata_ref_" + taxonomyReferenceObjects[dois[i]]["Open Tree of Life"][0].cleaned_organism_id} variant="outline-success" size="sm" href={taxonomyReferenceObjects[dois[i]]["Open Tree of Life"][0].reference_wikidata_id} target="_blank">
+
+                            <Image id={"wikidatalogo_ref_"+taxonomyReferenceObjects[dois[i]]["Open Tree of Life"][0].reference_wikidata_id} alt="Wikidata logo" className="img-fluid mt-2 mb-1" size={"xs"} src={WikidataLogo}/>
+                        </Button>
+                    </Col>
+                );
+
+            }
 
 
             full_table.push(
                 <Row className="align-items-center" style={{flex:1}} >
 
                     <Col xs={10}>
-                        <Tabs id = "taxo_tabs" defaultActiveKey="Open_Tree_of_Life" variant="pills" >
+                        <Tabs id = "taxo_tabs" defaultActiveKey={tabs_key} variant="pills" >
                             {all_db_tabs}
                         </Tabs>
                     </Col>
 
                     <Col sm={2} >
-                        <Button id={"linkTo_" + doi2url} variant="outline-primary" size="sm" href={"https://doi.org/"+doi2url} target="_blank">
-                            Ref: <FontAwesomeIcon icon="external-link-alt" fixedWidth/>
-                        </Button>
+                        <Row className="align-items-center btn-group" >
+                            {ref_buttons}
+                        </Row>
                     </Col>
 
                 </Row>);

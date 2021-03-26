@@ -55,7 +55,15 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 10px;
 }
 
+.btn-group-ref {
+  width: 100%;
+  height: 100%;
+}
 
+.btn-group-ref .btn-ref {
+  width: 50%;
+  height: 25%;
+}
 
 #headerNav .nav-tabs {
   border-bottom: none !important;
@@ -96,7 +104,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .card table tr th {
   font-size: small;
+
 }
+
 
 table tr td, table tr th {
   font-size: small;

@@ -16,7 +16,16 @@ export default class NaturalProductCardItem extends React.Component {
 
         //TODO either here (test for Tanimoto field), either create a Tanimoto card
 
-        var cardTitle = <Card.Link href={linkToCompoundPage} className="cardItemHeadline">{this.props.naturalProduct.lotus_id}</Card.Link>;
+        let card_main_id = this.props.naturalProduct.lotus_id;
+
+        if(naturalProduct.wikidata_id != null){
+            card_main_id = naturalProduct.wikidata_id.split("/")[naturalProduct.wikidata_id.split("/").length-1] ;
+        }
+
+        var cardTitle = <Card.Link href={linkToCompoundPage} className="cardItemHeadline">{card_main_id}</Card.Link>;
+
+
+
 
 
 
@@ -26,7 +35,7 @@ export default class NaturalProductCardItem extends React.Component {
 
 
             cardTitle = <>
-                <Card.Link href={linkToCompoundPage} className="cardItemHeadline">{this.props.naturalProduct.lotus_id}&nbsp;&nbsp;</Card.Link>
+                <Card.Link href={linkToCompoundPage} className="cardItemHeadline">{card_main_id}&nbsp;&nbsp;</Card.Link>
                 <p style={{color: "#FC6B1E"}}>{tanomotoScore} %</p>
             </>;
         }
@@ -49,6 +58,10 @@ export default class NaturalProductCardItem extends React.Component {
                         <tr>
                             <td>Mol. weight</td>
                             <td>{ Math.round((this.props.naturalProduct.molecular_weight + Number.EPSILON)  * 100) / 100 }</td>
+                        </tr>
+                        <tr>
+                            <td>Tmp. LOTUS id</td>
+                            <td>{this.props.naturalProduct.lotus_id}</td>
                         </tr>
 
                         </tbody>

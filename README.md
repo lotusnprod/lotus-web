@@ -22,6 +22,8 @@ mongorestore --port 27019 --db=NPOC2021 --noIndexRestore .
 mongo --port 27019
 use NPOC2021
 
+
+db.lotusUniqueNaturalProduct.createIndex( {lotus_id:1})
 db.lotusUniqueNaturalProduct.createIndex( {inchi:"hashed"})
 db.lotusUniqueNaturalProduct.createIndex( {inchikey:1})
 db.lotusUniqueNaturalProduct.createIndex( {smiles: "hashed"})
@@ -29,9 +31,14 @@ db.lotusUniqueNaturalProduct.createIndex( {inchi2D:"hashed"})
 db.lotusUniqueNaturalProduct.createIndex( {inchikey2D:1})
 db.lotusUniqueNaturalProduct.createIndex( {smiles2D: "hashed"})
 db.lotusUniqueNaturalProduct.createIndex( {molecular_formula:1})
-db.lotusUniqueNaturalProduct.createIndex( {lotus_id:1})
 db.lotusUniqueNaturalProduct.createIndex( {fragmentsWithSugar:"hashed"})
 db.lotusUniqueNaturalProduct.createIndex( {fragments:"hashed"})
+
+db.lotusUniqueNaturalProduct.createIndex( {molecular_weight:1})
+db.lotusUniqueNaturalProduct.createIndex( {fsp3:1})
+db.lotusUniqueNaturalProduct.createIndex( {lipinskiRuleOf5Failures:1})
+db.lotusUniqueNaturalProduct.createIndex( {heavy_atom_number:1})
+
 
 
 db.runCommand(
@@ -43,7 +50,7 @@ db.runCommand(
                 iupac_name:"text", traditional_name:"text", allTaxa:"text", allChemClassifications:"text", allWikidataIds:"text"
             },
             name: "superTextIndex",
-	    weights: { name:10, synonyms:5  }
+	    weights: { traditional_name:10, allTaxa:5  }
         }
 
     ]
