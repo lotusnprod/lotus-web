@@ -9,11 +9,6 @@ export default class Representations extends React.Component {
     render() {
         const naturalProduct = this.props.naturalProduct;
 
-        const divStyle = {
-  color: 'blue',
-  backgroundImage: 'url(' + imgUrl + ')',
-};
-
         const bioschemas = {
             "@context":"https://schema.org",
             "@type":"MolecularEntity",
