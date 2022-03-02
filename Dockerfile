@@ -1,4 +1,4 @@
-FROM openjdk:8u171-slim
+FROM openjdk:8-slim
 
 EXPOSE 8092
 VOLUME /tmp
