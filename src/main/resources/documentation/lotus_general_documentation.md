@@ -3,7 +3,6 @@
 If you use data from LOTUS Online, appropriate citation enables readers to locate the original source of the work. 
 
 
-
 ###  Simple search
 
 #### Molecule name
@@ -66,7 +65,6 @@ Advanced search enables users to search for a compound of their interest by spec
 Another advantage of advanced search is the ability to select the search in one of the data sources used to compile the overall database of our site.
 
 
-
 ### Rest API
 
 Rest API is an application program interface where users  utilize  HTTP requests to put and then get data about natural products. The Rest API uses less bandwidth than other search methods. Therefore, the Rest API is a faster search method due to highly efficient internet usage.
@@ -118,8 +116,7 @@ The user should use the above-presented URL link by adjusting the following opti
 
 The user can also use the Api to search by molecular mass (in Da) of the compounds, precising the desired minimal, maximal or both, molecular masses and the maximum number of molecules to return.
     
-    https://coconut.naturalproducts/net/api/search/molweight?minMass=800&maxMass=1000&maxHits=20
-
+    https://lotus.naturalproducts.net/api/search/molweight?minMass=800&maxMass=1000&maxHits=20
 
 
 ### Data organization of natural products
@@ -135,9 +132,6 @@ The list of  available sections at the natural products page:
 * Molecular descriptors
 
 
-
-
-
 ###  Downloads
 
 LOTUS Online offers the different download options of fragments or a complete database with all information included.
@@ -145,6 +139,3 @@ LOTUS Online offers the different download options of fragments or a complete da
 1. Download Natural Products Structures in SDF format. The SDF (structure data file) represents a chemical data file format developed by MDL. In this type of format, the natural products are delimited by lines consisting of four dollar signs ($$$$). All associated data items are denoted for every natural product in the database.
 2. Download the complete LOTUS dataset as a MongoDB dump. Using this option, all datasets are imported with the same visual depiction as it is at the Website.
 3. Download Natural Products Structures in SMILES format  
-
-
-
