@@ -8,21 +8,57 @@ The Wikidata version allows for community curation and addition of novel data.
 The current version allows a more user friendly experience (such as structural search, taxonomy oriented query, flat table and structures exports).
 
 
+Prior to any further action, a target folder needs to be generated, with the following command:
+
+```
+mvn package
+```
+
+To fire up a local version of it, you need to have Docker installed.
+
+
+⚠️ (AR)
+Needed to do this before in order to run:
+
+```
+docker swarm init
+docker network create --driver overlay --attachable nginx-proxy
+```
+⚠️
+
+```
+docker-compose build
+docker-compose up -d
+```
+
 ```
 docker exec -it npoc-mongo-db bash
+```
 
+```
 mongo --port 27019
+```
+
+```
 use NPOC2021
 db.dropDatabase()
 exit
+```
 
+```
 cd mongodata/NPOC2021/NPOC2021/
 mongorestore --port 27019 --db=NPOC2021 --noIndexRestore .
+```
 
+```
 mongo --port 27019
+```
+
+```
 use NPOC2021
+```
 
-
+```
 db.lotusUniqueNaturalProduct.createIndex( {lotus_id:1})
 db.lotusUniqueNaturalProduct.createIndex( {inchi:"hashed"})
 db.lotusUniqueNaturalProduct.createIndex( {inchikey:1})
@@ -68,8 +104,8 @@ db.lotusUniqueNaturalProduct.createIndex( { pubchemBits : "hashed" } )
 db.lotusUniqueNaturalProduct.createIndex( {deep_smiles: "hashed"})
 db.lotusUniqueNaturalProduct.createIndex( { "pfCounts.bits" :1} )
 db.lotusUniqueNaturalProduct.createIndex( { "pfCounts.count" : 1 })
-
 ```
 
-
+```
 docker-compose up -d --no-deps --build lotus-online
+```
