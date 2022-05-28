@@ -165,7 +165,7 @@ export default class TaxonomyReferenceMap extends React.Component{
                             tabs_key = "NCBI";
                         }
                     }else if(db_names[j] == "GBIF Backbone Taxonomy"){
-                        organismURL = "https://www.gbif.org/species/"+tax_object.cleaned_organism_id ;
+                        organismURL = "https://bioregistry.io/gbif:" + tax_object.cleaned_organism_id ;
                         if(tabs_key == null){
                             tabs_key = "GBIF_Backbone_Taxonomy";
                         }
@@ -174,9 +174,9 @@ export default class TaxonomyReferenceMap extends React.Component{
                         if(tabs_key == null){
                             tabs_key = "iNaturalist";
                         }
-                    }/*else if(db_names[j] == "ITIS"){
-                        organismURL = ""+tax_object.cleaned_organism_id ;
-                    }*/
+                    } else if(db_names[j] == "ITIS") {
+                        organismURL = "https://bioregistry.io/itis:" + tax_object.cleaned_organism_id ;
+                    }
                     else if(db_names[j] == "Index Fungorum"){
                         organismURL = "http://www.indexfungorum.org/names/NamesRecord.asp?RecordID="+tax_object.cleaned_organism_id ;
                         if(tabs_key == null){
