@@ -170,7 +170,7 @@ export default class TaxonomyReferenceMap extends React.Component{
                             tabs_key = "GBIF_Backbone_Taxonomy";
                         }
                     }else if(db_names[j] == "iNaturalist"){
-                        organismURL = "https://www.inaturalist.org/taxa/"+tax_object.cleaned_organism_id ;
+                        organismURL = "https://bioregistry.io/inaturalist.taxon:" + tax_object.cleaned_organism_id ;
                         if(tabs_key == null){
                             tabs_key = "iNaturalist";
                         }
@@ -178,7 +178,7 @@ export default class TaxonomyReferenceMap extends React.Component{
                         organismURL = "https://bioregistry.io/itis:" + tax_object.cleaned_organism_id ;
                     }
                     else if(db_names[j] == "Index Fungorum"){
-                        organismURL = "http://www.indexfungorum.org/names/NamesRecord.asp?RecordID="+tax_object.cleaned_organism_id ;
+                        organismURL = "https://bioregistry.io/fungorum:" + tax_object.cleaned_organism_id ;
                         if(tabs_key == null){
                             tabs_key = "Index_Fungorum";
                         }
