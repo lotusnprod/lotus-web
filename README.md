@@ -2,11 +2,10 @@
 # LOTUS web 
 
 Natural Products Online is an open source project for Natural Products (NPs) storage, search and analysis. 
-This repository contains code for LOTUS, the naturaL prOducTs occUrrence databaSe, one of the biggest and best annotated resources for NPs occurrences available free of charge and without any restriction. 
+This repository contains code for LOTUS, one of the biggest and best annotated resources for NPs occurrences available free of charge and without any restriction. 
 LOTUS is a living database which is hosted in parallel at Wikidata and here. 
 The Wikidata version allows for community curation and addition of novel data. 
 The current version allows a more user friendly experience (such as structural search, taxonomy oriented query, flat table and structures exports).
-
 
 Prior to any further action, a target folder needs to be generated, with the following command:
 
@@ -15,16 +14,6 @@ mvn package
 ```
 
 To fire up a local version of it, you need to have Docker installed.
-
-
-⚠️ (AR)
-Needed to do this before in order to run:
-
-```
-docker swarm init
-docker network create --driver overlay --attachable nginx-proxy
-```
-⚠️
 
 ```
 docker-compose build
@@ -43,6 +32,13 @@ mongo --port 27019
 use NPOC2021
 db.dropDatabase()
 exit
+```
+
+You then need to download the latest version of LOTUS (available at https://lotus.naturalproducts.net/download), and unzip it
+
+```
+curl https://lotus.naturalproducts.net/download/mongo -o mongodata/LOTUSlatest.zip
+unzip mongodata/LOTUSlatest.zip -d mongodata/ 
 ```
 
 ```
@@ -104,6 +100,9 @@ db.lotusUniqueNaturalProduct.createIndex( { pubchemBits : "hashed" } )
 db.lotusUniqueNaturalProduct.createIndex( {deep_smiles: "hashed"})
 db.lotusUniqueNaturalProduct.createIndex( { "pfCounts.bits" :1} )
 db.lotusUniqueNaturalProduct.createIndex( { "pfCounts.count" : 1 })
+
+exit
+exit
 ```
 
 ```
