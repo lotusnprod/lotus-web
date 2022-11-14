@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <kotlin.version>1.3.61</kotlin.version>
+        <kotlin.version>1.7.21</kotlin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <cdk.version>2.3</cdk.version>
