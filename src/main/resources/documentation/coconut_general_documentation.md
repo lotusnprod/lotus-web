@@ -1,6 +1,7 @@
 ### Citation guidelines
 
-If you use data from LOTUS Online, appropriate citation enables readers to locate the original source of the work. 
+If you use LOTUS in your research, please cite the following work:
+Adriano Rutz, Maria Sorokina, Jakub Galgonek, Daniel Mietchen, Egon Willighagen, Arnaud Gaudry, James G Graham, Ralf Stephan, Roderic Page, Jiří Vondrášek, Christoph Steinbeck, Guido F Pauli, Jean-Luc Wolfender, Jonathan Bisson, Pierre-Marie Allard (2022) The LOTUS initiative for open knowledge management in natural products research. eLife 11:e70780. <https://doi.org/10.7554/eLife.70780> 
 
 
 ###  Simple search
