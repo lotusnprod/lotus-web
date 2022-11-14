@@ -20,8 +20,8 @@ export default class NaturalProductTableItem extends React.Component {
 
         let card_main_id = this.props.naturalProduct.lotus_id;
 
-        if(naturalProduct.wikidata_id != null){
-            card_main_id = naturalProduct.wikidata_id.split("/")[naturalProduct.wikidata_id.split("/").length-1] ;
+        if(this.props.naturalProduct.wikidata_id != null){
+            card_main_id = this.props.naturalProduct.wikidata_id.split("/")[this.props.naturalProduct.wikidata_id.split("/").length-1] ;
         }
 
 
