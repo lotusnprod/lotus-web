@@ -107,6 +107,11 @@ export default class ChemClassification extends React.Component {
                         </thead>
                         <tbody>
                         <tr>
+                            <!-- 
+                                // ideally, there would be associated identifiers from the ClassyFire ontology available in the `naturalProduct`
+                                // object for each of the 4 classifications that could be used to generate links via the bioregistry, 
+                                // e.g., with https://bioregistry.io/classyfire:0000001 for "Inorganic compounds"
+                            -->
                             <td style={{"whiteSpace":"nowrap",  "border":"thin solid #dee2e6"}} id={"cf1"}>{naturalProduct.chemicalTaxonomyClassyfireKingdom || "-"}</td>
                             <td style={{"whiteSpace":"nowrap",  "border":"thin solid #dee2e6"}} id={"cf2"}>{naturalProduct.chemicalTaxonomyClassyfireSuperclass || "-"}</td>
                             <td style={{"whiteSpace":"nowrap",  "border":"thin solid #dee2e6"}} id={"cf3"}>{naturalProduct.chemicalTaxonomyClassyfireClass || "-"}</td>
