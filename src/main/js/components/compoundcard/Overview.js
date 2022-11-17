@@ -39,7 +39,7 @@ export default class Overview extends React.Component {
 
         let cas_registry_num = "";
         if(naturalProduct.cas != null && naturalProduct.cas != ""){
-            cas_registry_num = <tr><td>CAS registry number</td><td><a href="https://bioregistry.io/cas:{naturalProduct.cas}">{naturalProduct.cas}</a></td></tr>;
+            cas_registry_num = <tr><td>CAS registry number</td><td>{naturalProduct.cas}</td></tr>;
         }else{
             cas_registry_num = <tr><td>CAS registry number</td><td>-</td></tr>;
         }

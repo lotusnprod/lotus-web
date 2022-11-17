@@ -12,7 +12,7 @@ import Tab from "react-bootstrap/Tab";
 const React = require("react");
 
 import WikidataLogo from "../../../resources/images/wikidatalogo.png";
-import CoconutIcon from "../../../resources/images/coconut_logo.png";
+import CoconutIcon from "../../../resources/images/lotus_logo.png";
 import Image from "react-bootstrap/Image";
 
 
@@ -41,7 +41,7 @@ export default class TaxonomyReferenceMap extends React.Component{
             let allTaxonomiesObject = taxonomyReferenceObjects[dois[i]];
 
             var db_names = [];
-            for(var k in allTaxonomiesObject) db_names.push(k);
+            for(var k in allTaxonomiesObject)db_names.push(k);
 
             var tabs_key = null;
 
@@ -116,12 +116,13 @@ export default class TaxonomyReferenceMap extends React.Component{
                         <th>Species</th>
                     )
                 }
-
-                taxo_header.push(
-                    <th style={{width:"100px"}}>
-                        Link to taxonomy
-                    </th>
-                );
+                if( db_names[j] != "VASCAN"  && db_names[j] != "ITIS") {
+                    taxo_header.push(
+                        <th style={{width: "100px"}}>
+                            Link to taxonomy
+                        </th>
+                    );
+                }
 
 
 
@@ -160,25 +161,25 @@ export default class TaxonomyReferenceMap extends React.Component{
 
 
                     }else if(db_names[j] == "NCBI"){
-                        organismURL = "https://www.ncbi.nlm.nih.gov/Taxonomy/CompoundBrowser/wwwtax.cgi?id="+tax_object.cleaned_organism_id ;
+                        organismURL = "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id="+tax_object.cleaned_organism_id ;
                         if(tabs_key == null){
                             tabs_key = "NCBI";
                         }
                     }else if(db_names[j] == "GBIF Backbone Taxonomy"){
-                        organismURL = "https://bioregistry.io/gbif:" + tax_object.cleaned_organism_id ;
+                        organismURL = "https://www.gbif.org/species/"+tax_object.cleaned_organism_id ;
                         if(tabs_key == null){
                             tabs_key = "GBIF_Backbone_Taxonomy";
                         }
                     }else if(db_names[j] == "iNaturalist"){
-                        organismURL = "https://bioregistry.io/inaturalist.taxon:" + tax_object.cleaned_organism_id ;
+                        organismURL = "https://www.inaturalist.org/taxa/"+tax_object.cleaned_organism_id ;
                         if(tabs_key == null){
                             tabs_key = "iNaturalist";
                         }
-                    } else if(db_names[j] == "ITIS") {
-                        organismURL = "https://bioregistry.io/itis:" + tax_object.cleaned_organism_id ;
-                    }
+                    }/*else if(db_names[j] == "ITIS"){
+                        organismURL = ""+tax_object.cleaned_organism_id ;
+                    }*/
                     else if(db_names[j] == "Index Fungorum"){
-                        organismURL = "https://bioregistry.io/fungorum:" + tax_object.cleaned_organism_id ;
+                        organismURL = "http://www.indexfungorum.org/names/NamesRecord.asp?RecordID="+tax_object.cleaned_organism_id ;
                         if(tabs_key == null){
                             tabs_key = "Index_Fungorum";
                         }
@@ -242,13 +243,24 @@ export default class TaxonomyReferenceMap extends React.Component{
                         )
                     }
 
-                    taxo_line.push(
-                        <td style={{"whiteSpace":"nowrap", "minWidth":"130px", "alignItems": "center",  "justifyContent": "center", "border":"thin solid #dee2e6", "margin":"3px", "textAlign": 'center'}} >
-                            <Button id={"linkTo_" + tax_object.cleaned_organism_id} variant="outline-primary" size="md" href={organismURL} target="_blank">
-                                <FontAwesomeIcon icon="sitemap" fixedWidth/>
-                            </Button>
-                        </td>
-                    );
+                    if( db_names[j] != "VASCAN"  && db_names[j] != "ITIS"){
+                        taxo_line.push(
+                            <td style={{
+                                "whiteSpace": "nowrap",
+                                "minWidth": "130px",
+                                "alignItems": "center",
+                                "justifyContent": "center",
+                                "border": "thin solid #dee2e6",
+                                "margin": "3px",
+                                "textAlign": 'center'
+                            }}>
+                                <Button id={"linkTo_" + tax_object.cleaned_organism_id} variant="outline-primary"
+                                        size="md" href={organismURL} target="_blank">
+                                    <FontAwesomeIcon icon="sitemap" fixedWidth/>
+                                </Button>
+                            </td>
+                        );
+                    }
 
                     if( tax_object.wikidata_id != null ){
                         taxo_line.push(

@@ -1,22 +1,28 @@
 ### Citation guidelines
-
-If you use LOTUS in your research, please cite the following work:
-Adriano Rutz, Maria Sorokina, Jakub Galgonek, Daniel Mietchen, Egon Willighagen, Arnaud Gaudry, James G Graham, Ralf Stephan, Roderic Page, Jiří Vondrášek, Christoph Steinbeck, Guido F Pauli, Jean-Luc Wolfender, Jonathan Bisson, Pierre-Marie Allard (2022) The LOTUS initiative for open knowledge management in natural products research. eLife 11:e70780. <https://doi.org/10.7554/eLife.70780> 
+> **Note**
+> If you use LOTUS in your research, please cite the following work:
+- Adriano Rutz, Maria Sorokina, Jakub Galgonek, Daniel Mietchen, Egon Willighagen, Arnaud Gaudry, James G Graham, Ralf Stephan, Roderic Page, Jiří Vondrášek, Christoph Steinbeck, Guido F Pauli, Jean-Luc Wolfender, Jonathan Bisson, Pierre-Marie Allard (2022) The LOTUS initiative for open knowledge management in natural products research. eLife 11:e70780. <https://doi.org/10.7554/eLife.70780> 
 
 
 ###  Simple search
 
 #### Molecule name
+
 The user may write a molecule name as IUPAC, Trivial, or any other synonym. When a user enters any widely used name of the natural product, the search engine will recognize it successfully. The software output will be a group of compounds that contain the inputted name in its title.
  
 #### InChI-IUPAC International Chemical Identifier (InChI)
+
 The InChI is a non-proprietary identifier for chemical substances that is widely used in electronic data sources. It expresses chemical structures in terms of atomic connectivity, tautomeric state, isotopes, stereochemistry, and electronic charge in order to produce a string of machine-readable characters unique to the particular molecule. Therefore, when InChl name is entered, the software output will be a unique inputted compound with all required characteristics.
  
 #### InChI key
+
 The InChIKey is a 25-character hashed version of the full InChI, designed to allow for easy web searches of chemical compounds. InChIKeys consist of 14 characters resulting from a hash of the connectivity information from the full InChI string, followed by a hyphen, followed by 8 characters resulting from a hash of the remaining layers of the InChI, followed by a single character indicating the version of InChI used, followed by single checksum character. Therefore, when the user enters the InChl key, the software output will be a single compound that is recognized by a particular InChl key.
+
 #### Molecular formula
+
 The molecular formula is a type of chemical formula that shows the kinds of atoms and the number of each kind in a single molecule of a particular compound. The molecular formula doesn’t show any information about the molecule structure. The structures and characteristics of compounds with the same molecular formula may vary significantly. Hence, by entering a molecular formula into the search bar, the software output will be a group of compounds with specified atoms and their numbers within a single molecule.  
 #### LOTUS ID
+
 Every natural product in our database has its unique identification number that may be used for search purposes exclusively at our site.
 
 

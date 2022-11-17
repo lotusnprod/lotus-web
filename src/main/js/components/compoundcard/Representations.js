@@ -31,7 +31,7 @@ export default class Representations extends React.Component {
                         <tbody>
                         <tr key={"represent_id"}>
                             <td>Temporary LOTUS id</td>
-                            <td><a href="https://bioregistry.io/lotus:{naturalProduct.lotus_id}">{naturalProduct.lotus_id}</a></td>
+                            <td>{naturalProduct.lotus_id}</td>
                         </tr>
                         <tr key={"represent_name"}>
                             <td>Name</td>
