@@ -52,7 +52,7 @@
     "autoprefixer": "^9.8.5",
     "babel-loader": "^8.1.0",
     "css-loader": "^3.6.0",
-    "favicons-webpack-plugin": "^3.0.1",
+    "favicons-webpack-plugin": "^5.0.0",
     "file-loader": "^4.2.0",
     "html-loader": "^0.5.5",
     "node-sass": "^4.14.1",
