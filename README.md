@@ -1,5 +1,8 @@
-
 # LOTUS web 
+
+> [!IMPORTANT]
+> **This repository has moved.** Development continues at **[github.com/lotus-initiative](https://github.com/lotus-initiative)**.
+> This repo is archived and kept only for backward compatibility. Please head over there for the latest code, issues, and releases.
 
 Natural Products Online is an open source project for Natural Products (NPs) storage, search and analysis. 
 This repository contains code for LOTUS, one of the biggest and best annotated resources for NPs occurrences available free of charge and without any restriction. 
